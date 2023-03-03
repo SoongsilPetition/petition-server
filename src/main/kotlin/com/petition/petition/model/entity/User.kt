@@ -1,20 +1,22 @@
 package com.petition.petition.model.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import lombok.AllArgsConstructor
+import lombok.NoArgsConstructor
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-@Table(name = "User")
+@Table(name = "Users")
+@NoArgsConstructor
+@AllArgsConstructor
 class User(
         password: String,
         name: String,
         email: String,
-        createdAt: LocalDateTime,
-        modifiedAt: LocalDateTime,
 
-        @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
+        @OneToMany(mappedBy = "users", cascade = [CascadeType.ALL])
         val petitions: MutableList<Petition> = mutableListOf()
 ) {
     @Id
@@ -22,14 +24,7 @@ class User(
     var id: Int = 0
 
     @Column(nullable = false)
-    var password = password
-        @JsonIgnore
-        get
-        set(value) {
-            val passwordEncoder = BCryptPasswordEncoder()
-            field = passwordEncoder.encode(value)
-        }
-
+    var password = BCryptPasswordEncoder().encode(password)
 
     @Column(nullable = false)
     var name = name
@@ -46,11 +41,11 @@ class User(
 
 
     @Column
-    var createdAt = createdAt
+    var createdAt: LocalDateTime? = null
         protected set
 
     @Column
-    var modifiedAt = modifiedAt
+    var modifiedAt: LocalDateTime? = null
         protected set
 
 

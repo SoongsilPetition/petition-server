@@ -1,7 +1,6 @@
 package com.petition.petition.controller
 
 import com.petition.petition.common.exception.UnauthenticatedException
-import com.petition.petition.mapper.UserMapper
 import com.petition.petition.model.dto.auth.LoginDto
 import com.petition.petition.model.dto.auth.RegisterDto
 import com.petition.petition.model.entity.User
@@ -13,16 +12,13 @@ import javax.servlet.http.HttpServletResponse
 
 @RestController
 class UserController(
-    private val userService: UserService,
-    private val userMapper: UserMapper
+    private val userService: UserService
 ) {
     @PostMapping("user/register")
     fun register(@RequestBody body: RegisterDto): ResponseEntity<User> {
-        //mapper를 써서 RegisterDTO를 User로 변환
-        val user: User = userMapper.registerDtoToUser(body)
 
         //Service에서 User 저장 로직 수행
-        val response: User = userService.saveUser(user)
+        val response: User = userService.saveUser(body)
 
         return ResponseEntity.ok(response)
     }

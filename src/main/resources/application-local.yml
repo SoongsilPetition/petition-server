@@ -6,6 +6,7 @@ spring:
   datasource:
     url: jdbc:h2:mem:test
   jpa:
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop  # 시작 시 데이터베이스 초기화
     show-sql: true      # 쿼리문 보여줌

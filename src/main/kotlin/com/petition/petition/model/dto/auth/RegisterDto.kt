@@ -1,7 +1,7 @@
 package com.petition.petition.model.dto.auth
 
 class RegisterDto {
-    val nickname = ""
+    val name = ""
     val email = ""
     val password = ""
 }

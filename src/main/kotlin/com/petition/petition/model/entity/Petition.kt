@@ -11,7 +11,7 @@ class Petition(
 
         @ManyToOne
         @JoinColumn(name = "user_id")
-        val user: User,
+        val users: User,
 
         petitionDueDate: LocalDateTime,
         createdAt: LocalDateTime,
