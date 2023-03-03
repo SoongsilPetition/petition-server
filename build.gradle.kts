@@ -62,7 +62,7 @@ dependencies {
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
-		JavaVersion.VERSION_17.toString()
+		jvmTarget = JavaVersion.VERSION_17.toString()
 	}
 }
 

@@ -21,16 +21,11 @@ class User {
             field = passwordEncoder.encode(value)
         }
 
-    var nickname: String? = null
+    var name: String? = null
 
     @Column(unique = true)
     var email: String =""
 
-    var profileMessage: String? = null
-    var profileImagePath: String? = null
-
-    @Column(nullable = false)
-    var activateAt: LocalDateTime? = null
     @Column
     var createdAt: LocalDateTime? = null
     @Column
@@ -38,7 +33,6 @@ class User {
 
     @PrePersist
     fun onPrePersist() {
-        activateAt = LocalDateTime.now()
         createdAt = LocalDateTime.now()
         modifiedAt = LocalDateTime.now()
     }
