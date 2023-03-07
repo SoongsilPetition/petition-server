@@ -2,8 +2,8 @@ package com.petition.petition.service
 
 import com.petition.petition.common.exception.InvalidUserException
 import com.petition.petition.common.exception.UnauthenticatedException
-import com.petition.petition.model.dto.auth.LoginDto
-import com.petition.petition.model.dto.auth.RegisterDto
+import com.petition.petition.model.payload.auth.request.LoginRequestDto
+import com.petition.petition.model.payload.auth.request.RegisterRequestDto
 import com.petition.petition.model.entity.User
 import com.petition.petition.repository.UserRepository
 import io.jsonwebtoken.Jwts
@@ -13,13 +13,13 @@ import java.util.*
 
 @Service
 class UserService(
-        private val userRepository: UserRepository
+    private val userRepository: UserRepository
 ) {
-    fun saveUser(body: RegisterDto): User {
+    fun saveUser(body: RegisterRequestDto): User {
         val user = User(
-                body.password,
-                body.name,
-                body.email
+            password = body.password,
+            name = body.name,
+            email = body.email,
         )
         return userRepository.save(user)
     }
@@ -32,7 +32,7 @@ class UserService(
         return userRepository.findById(id).orElse(null)
     }
 
-    fun checkValidUser(body: LoginDto) {
+    fun checkValidUser(body: LoginRequestDto) {
         val findUser: User = findByEmail(body.email) ?: throw InvalidUserException("User not found")
         if (!findUser.comparePassword(body.password)) {
             throw InvalidUserException("password is not correct")
@@ -40,12 +40,12 @@ class UserService(
 
     }
 
-    fun generateJwt(body: LoginDto): String? {
+    fun generateJwt(body: LoginRequestDto): String? {
         val issuer = body.email
         val jwt = Jwts.builder()
-                .setIssuer(issuer)
-                .setExpiration(Date(System.currentTimeMillis() + 60 * 24 * 1000)) // 1 day
-                .signWith(SignatureAlgorithm.HS512, "secret").compact()
+            .setIssuer(issuer)
+            .setExpiration(Date(System.currentTimeMillis() + 60 * 24 * 1000)) // 1 day
+            .signWith(SignatureAlgorithm.HS512, "secret").compact()
 
         return jwt
     }

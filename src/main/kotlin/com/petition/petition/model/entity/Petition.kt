@@ -6,46 +6,28 @@ import javax.persistence.*
 @Entity
 @Table(name = "Petition")
 class Petition(
-        petitionTitle: String,
-        petitionContent: String,
-
-        @ManyToOne
-        @JoinColumn(name = "user_id")
-        val users: User,
-
-        petitionDueDate: LocalDateTime,
-        createdAt: LocalDateTime,
-        modifiedAt: LocalDateTime
-) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Int = 0
+    var id: Int,
 
     @Column(nullable = false)
-    var petitionTitle = petitionTitle
+    var petitionTitle:String,
 
     @Column(nullable = false)
-    var petitionContent = petitionContent
+    var petitionContent: String,
 
     @Column(nullable = false)
-    var petitionDueDate = petitionDueDate
+    var petitionDueDate: LocalDateTime,
 
-    @Column
-    var createdAt = createdAt
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    var users: User,
 
-    @Column
-    var modifiedAt = modifiedAt
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    var status: PetitionStatus // 청원 상태
+) : BaseEntity()
 
-    @PrePersist
-    fun onPrePersist() {
-        createdAt = LocalDateTime.now()
-        modifiedAt = LocalDateTime.now()
-    }
-
-    @PreUpdate
-    fun onPreUpdate() {
-        modifiedAt = LocalDateTime.now()
-    }
-
-
+enum class PetitionStatus {
+    ONGOING, ACCEPTED, REJECTED
 }
