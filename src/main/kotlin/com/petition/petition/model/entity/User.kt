@@ -12,7 +12,7 @@ import javax.persistence.*
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Int = 0,
+    var userId: Int = 0,
 
     @Column(nullable = false)
     var password: String,

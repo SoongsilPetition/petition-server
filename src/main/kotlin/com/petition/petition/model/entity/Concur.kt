@@ -8,7 +8,7 @@ import javax.persistence.*
 class Concur(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Int,
+    var concurId: Int,
 
     @Column(nullable = false)
     var concurContent: String,

@@ -8,7 +8,7 @@ import javax.persistence.*
 class Petition(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Int,
+    var petitionId: Int,
 
     @Column(nullable = false)
     var petitionTitle:String,
