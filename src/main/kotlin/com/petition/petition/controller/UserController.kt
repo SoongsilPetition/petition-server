@@ -18,21 +18,20 @@ class UserController(
     fun register(@RequestBody body: RegisterRequestDto): ResponseEntity<User> {
 
         //Service에서 User 저장 로직 수행
-        val response: User = userService.saveUser(body)
-
-        return ResponseEntity.ok(response)
+        return ResponseEntity.ok(userService.saveUser(body))
     }
 
     @PostMapping("user/login")
     fun login(@RequestBody body: LoginRequestDto, response: HttpServletResponse): ResponseEntity<Any> {
 
         //유효한 유저인지 검증하는 로직
+        //TODO: 숭실대 학생인지 검증하는 로직 추가 필요
         userService.checkValidUser(body)
 
         //JWT 생성
         val jwt = userService.generateJwt(body)
 
-        //JWT를 쿠키에 저장
+        //JWT를 저장
         response.addHeader("Authorization", "$jwt")
         return ResponseEntity.ok("success")
     }

@@ -2,6 +2,7 @@ package com.petition.petition.model.entity
 
 import javax.persistence.*
 
+//TODO: 비동의 추가?
 
 @Entity
 @Table(name = "Concur")
