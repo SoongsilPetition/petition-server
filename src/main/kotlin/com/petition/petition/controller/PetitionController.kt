@@ -13,7 +13,7 @@ class PetitionController(
     private val petitionService: PetitionService
 ) {
     @PostMapping("petition")
-    fun petition(
+    fun postPetition(
         @RequestBody body: PetitionWriteRequestDto,
         @RequestHeader("Authorization") jwt: String
     ): ResponseEntity<Petition> {
@@ -21,7 +21,7 @@ class PetitionController(
     }
 
     //TODO: 페이징처리해서 가져오는데 concur하고 내용까지 가져오는걸 수정
-    @GetMapping("petition") //petition리스트 가져오기
+    @GetMapping("petition") //petition 리스트 가져오기
     fun getPetitions(
         @RequestParam(required = false, defaultValue = "1") page: Int,
         @RequestParam(required = false, defaultValue = "10") size: Int

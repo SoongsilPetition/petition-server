@@ -1,5 +1,6 @@
 package com.petition.petition.model.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor
@@ -33,6 +34,7 @@ class Petition(
     @Column(nullable = false)
     var status: PetitionStatus = PetitionStatus.ONGOING, // 청원 상태
 
+    @JsonBackReference //순환참조 방지
     @OneToMany(mappedBy = "petition", cascade = [CascadeType.ALL])
     var concur: MutableList<Concur> = mutableListOf(),
 
