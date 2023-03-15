@@ -58,6 +58,6 @@ class UserService(
 
         val body = Jwts.parser().setSigningKey("secret").parseClaimsJws(jwt).body
 
-        return getById(body.issuer.toInt())
+        return findByEmail(body.issuer)
     }
 }

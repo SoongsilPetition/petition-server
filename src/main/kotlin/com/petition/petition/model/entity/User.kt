@@ -1,5 +1,6 @@
 package com.petition.petition.model.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -26,6 +27,7 @@ class User(
     @Column(nullable = true)
     var roleFlag: RoleFlag = RoleFlag.USER,
 
+    @JsonBackReference //순환참조 방지
     @OneToMany(mappedBy = "users", cascade = [CascadeType.ALL])
     var petitions: MutableList<Petition> = mutableListOf(),
 ) : BaseEntity() {

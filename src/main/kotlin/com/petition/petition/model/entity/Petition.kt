@@ -1,5 +1,6 @@
 package com.petition.petition.model.entity
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor
 import java.time.LocalDateTime
@@ -24,8 +25,9 @@ class Petition(
     var petitionDueDate: LocalDateTime =LocalDateTime.now().plusDays(30),
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "user_id")
-    var users: User,
+    var users: User?,
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -40,13 +42,14 @@ class Petition(
 
     //글 작성 버튼을 누르는 순간 글이 뻘글인지, 분란글인지, 정상글인지 인공지능 서버가
     // 판단하여 보내준다. enumerated 컬럼 넣기
-) : BaseEntity(){
+) : BaseEntity() {
 
-    constructor(petitionTitle: String, petitionContent: String) : this(
-        petitionTitle, petitionContent ){
-        this.petitionTitle = petitionTitle
-        this.petitionContent = petitionContent
-    }
+    constructor(petitionTitle: String, petitionContent: String, users: User?) : this(
+        petitionId = 0,
+        petitionTitle = petitionTitle,
+        petitionContent = petitionContent,
+        users = users
+    )
 
 
 }
