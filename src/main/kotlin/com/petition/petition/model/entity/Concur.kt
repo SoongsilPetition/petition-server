@@ -20,6 +20,13 @@ class Concur(
 
     @ManyToOne
     @JoinColumn(name = "petition_id")
-    var petition: Petition
+    var petition: Petition,
+
+    @Column(nullable = false)
+    var agreementStatus:AgreementStatus
 
 ): BaseEntity()
+
+enum class AgreementStatus{
+    AGREE,DISAGREE
+}

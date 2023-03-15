@@ -16,13 +16,13 @@ class Petition(
     var petitionId: Int,
 
     @Column(nullable = false)
-    var petitionTitle:String,
+    var petitionTitle: String,
 
     @Column(nullable = false)
     var petitionContent: String,
 
     @Column(nullable = false)
-    var petitionDueDate: LocalDateTime =LocalDateTime.now().plusDays(30),
+    var petitionDueDate: LocalDateTime = LocalDateTime.now().plusDays(30),
 
     @ManyToOne
     @JsonManagedReference
@@ -40,20 +40,29 @@ class Petition(
     @OneToMany(mappedBy = "petition", cascade = [CascadeType.ALL])
     var category: MutableList<PetitionCategory> = mutableListOf(),
 
+    @Column(nullable = false)
+    var likeCount: Long = 0, // 좋아요 갯수를 캐시를 이용해 처리
+
     //글 작성 버튼을 누르는 순간 글이 뻘글인지, 분란글인지, 정상글인지 인공지능 서버가
     // 판단하여 보내준다. enumerated 컬럼 넣기
+    @Column(nullable = false)
+    var petitionType: PetitionType
 ) : BaseEntity() {
 
-    constructor(petitionTitle: String, petitionContent: String, users: User?) : this(
+    constructor(petitionTitle: String, petitionContent: String, users: User?, petitionType: PetitionType) : this(
         petitionId = 0,
         petitionTitle = petitionTitle,
         petitionContent = petitionContent,
-        users = users
+        users = users,
+        petitionType = petitionType
     )
-
-
 }
 
 enum class PetitionStatus {
     ONGOING, ACCEPTED, REJECTED
 }
+
+enum class PetitionType {
+    APPROPRIATE, CONTROVERSIAL, USELESS
+}
+
