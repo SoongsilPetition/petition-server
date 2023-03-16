@@ -35,10 +35,13 @@ class ConcurService(
         return concurRepository.save(concur)
     }
 
-    //TODO: Concur를 가져올때 agree/disagree 나눠서 가져와야함
-    fun getConcursList(page: Int, size: Int, agreementStatus: AgreementStatus): List<Concur>? {
+    fun getConcursList(petitionId: Int, page: Int, size: Int, agreementStatus: AgreementStatus): List<Concur>? {
         val pageRequest: Pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "createdAt")
-        val concurs: Page<Concur> = concurRepository.findAll(pageRequest)
+        val petition:Petition = petitionService.getPetition(petitionId)
+        val concurs: Page<Concur> = concurRepository.findAllByPetitionAndAgreementStatus(petition, agreementStatus,pageRequest)
         return concurs.content
     }
+
+
+
 }
