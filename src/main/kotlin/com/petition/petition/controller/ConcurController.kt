@@ -7,6 +7,8 @@ import com.petition.petition.service.ConcurService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+
+//청원의경우 청원 수정, 청원 취소는 없음
 @RestController
 class ConcurController(
     private val concurService: ConcurService
@@ -16,7 +18,6 @@ class ConcurController(
         @RequestBody body: ConcurWriteRequestDto,
         @RequestHeader("Authorization") jwt: String
     ):ResponseEntity<Concur> {
-
         return ResponseEntity.ok(concurService.saveConcur(body,jwt))
     }
 

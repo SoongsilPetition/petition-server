@@ -58,6 +58,9 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 
+	//springdoc
+	implementation("org.springdoc:springdoc-openapi-ui:1.5.12")
+
 }
 
 tasks.withType<KotlinCompile> {

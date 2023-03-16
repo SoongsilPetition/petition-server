@@ -25,7 +25,7 @@ class ConcurService(
         val user: User? = userService.getValidUser(jwt)
         val petition: Petition = petitionService.getPetition(body.petitionId)
 
-        //Q Agreement클래스를 변환해야하는지 고민
+        //TODO: Agreement클래스를 변환해야하는지 고민
         val concur = Concur(
             concurContent = body.concurContents,
             user = user,
