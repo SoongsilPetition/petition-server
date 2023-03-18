@@ -12,7 +12,7 @@ class WebConfig : WebMvcConfigurer {
     //CORS 설정 코드
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-            .allowedOrigins("http://localhost:3000", "http://localhost:8080")
+            .allowedOrigins("*")
             .allowCredentials(true)
             .exposedHeaders("Authorization")
     }
