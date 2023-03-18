@@ -12,7 +12,9 @@ class WebConfig : WebMvcConfigurer {
     //CORS 설정 코드
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
+            .allowedMethods("*")
             .allowedOrigins("*")
+            .allowedHeaders("*")
             .allowCredentials(true)
             .exposedHeaders("Authorization")
     }
