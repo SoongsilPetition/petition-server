@@ -21,7 +21,7 @@ import java.io.FileOutputStream
 class StorageService(
     @Autowired
     private val s3Client: AmazonS3,
-    @Value("\${cloud.aws.s3.bucket}")
+    @Value("\${application.bucket.name}")
     private val bucketName: String
 ) {
 

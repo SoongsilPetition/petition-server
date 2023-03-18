@@ -1,9 +1,9 @@
 package com.petition.petition.controller
 
 import com.petition.petition.common.exception.UnauthenticatedException
+import com.petition.petition.model.entity.User
 import com.petition.petition.model.payload.auth.request.LoginRequestDto
 import com.petition.petition.model.payload.auth.request.RegisterRequestDto
-import com.petition.petition.model.entity.User
 import com.petition.petition.service.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

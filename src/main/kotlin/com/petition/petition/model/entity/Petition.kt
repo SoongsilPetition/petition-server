@@ -48,7 +48,11 @@ class Petition(
     //글 작성 버튼을 누르는 순간 글이 뻘글인지, 분란글인지, 정상글인지 인공지능 서버가
     // 판단하여 보내준다. enumerated 컬럼 넣기
     @Column(nullable = false)
-    var petitionType: PetitionType
+    var petitionType: PetitionType,
+
+    @Column
+    var petitionImage: String? = null
+
 ) : BaseEntity() {
 
     constructor(petitionTitle: String, petitionContent: String, users: User?, petitionType: PetitionType) : this(
