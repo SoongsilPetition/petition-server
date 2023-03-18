@@ -32,7 +32,7 @@ class PetitionService(
             petitionType = petitionType
         )
 
-        //category를 forEach 반복문을 이용하여 작성
+        //TODO: category를 forEach 반복문을 이용하여 작성
         return petitionRepository.save(petition)
     }
 

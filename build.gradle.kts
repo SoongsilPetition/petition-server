@@ -61,6 +61,12 @@ dependencies {
 	//springdoc
 	implementation("org.springdoc:springdoc-openapi-ui:1.5.12")
 
+	//aws
+	implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
+	implementation("com.amazonaws:aws-java-sdk-core:1.12.385")
+	implementation("com.amazonaws:aws-java-sdk-s3:1.12.385")
+
+
 }
 
 tasks.withType<KotlinCompile> {
