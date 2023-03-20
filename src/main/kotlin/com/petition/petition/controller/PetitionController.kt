@@ -20,7 +20,8 @@ class PetitionController(
         return ResponseEntity.ok(petitionService.savePetition(body, jwt))
     }
 
-    //TODO: 페이징처리해서 가져오는데 concur하고 내용까지 가져오는걸 수정
+    //TODO: 페이징처리해서 가져오는데 concur하고 내용까지 가져오는걸 수정해서
+    //필요한 내용만 가져오도록 수정
     @GetMapping("petition") //petition 리스트 가져오기
     fun getPetitions(
         @RequestParam(required = false, defaultValue = "1") page: Int,
