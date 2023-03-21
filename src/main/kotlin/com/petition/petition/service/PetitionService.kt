@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 
 @Service
@@ -49,8 +48,7 @@ class PetitionService(
     }
 
     fun getOngoingPetitionsList(): List<Petition>? {
-        val petitions: List<Petition>? = petitionRepository.findAllByPetitionType(PetitionStatus.ONGOING)
-        return petitions
+        return petitionRepository.findAllByPetitionType(PetitionStatus.ONGOING)
     }
 
     fun updatePetition(petition: Petition): Petition {

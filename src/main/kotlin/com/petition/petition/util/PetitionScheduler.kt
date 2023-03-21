@@ -14,7 +14,7 @@ class PetitionScheduler(
 
     //매일 0시에 청원 마감일이 지난 청원들을 자동으로 거절처리
     @Scheduled(cron = "0 0 0 * * ?")
-    fun petitonSchedulerMethod(){
+    fun petitionSchedulerMethod(){
         val petitions = petitionService.getOngoingPetitionsList()
         if (petitions != null) {
             for(petition: Petition in petitions){

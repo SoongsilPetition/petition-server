@@ -39,7 +39,9 @@ class UserController(
 
     //이거 이렇게 하면 안되고 userid를 받아서 그 id에 해당되는 유저를 리턴하는 방식으로 수정해야함함
     @GetMapping("myprofile")
-    fun user(@CookieValue("jwt") jwt: String?): ResponseEntity<Any> {
+    fun user(
+        @RequestHeader("Authorization") jwt: String?
+    ): ResponseEntity<Any> {
         return try {
             val user = userService.getValidUser(jwt)
             ResponseEntity.ok(user)
@@ -48,13 +50,4 @@ class UserController(
         }
     }
 
-    @PostMapping("user/logout")
-    fun logout(response: HttpServletResponse): ResponseEntity<Any> {
-        val cookie = Cookie("jwt", "")
-        cookie.maxAge = 0
-
-        response.addCookie(cookie)
-
-        return ResponseEntity.ok(cookie)
-    }
 }
