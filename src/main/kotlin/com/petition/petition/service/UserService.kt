@@ -10,6 +10,7 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.stereotype.Service
 import java.util.*
+import javax.servlet.http.HttpServletResponse
 
 @Service
 class UserService(
@@ -59,5 +60,16 @@ class UserService(
         val body = Jwts.parser().setSigningKey("secret").parseClaimsJws(jwt).body
 
         return findByEmail(body.issuer)
+    }
+
+    fun login(body:LoginRequestDto,response: HttpServletResponse){
+        //유효한 유저인지 검증하는 로직
+        //TODO: 숭실대 학생인지 검증하는 로직 추가 필요
+        checkValidUser(body)
+        //JWT 생성
+        val jwt = generateJwt(body)
+
+        //JWT를 저장
+        response.addHeader("Authorization", "$jwt")
     }
 }

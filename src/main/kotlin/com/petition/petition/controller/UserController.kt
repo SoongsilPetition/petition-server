@@ -23,16 +23,7 @@ class UserController(
 
     @PostMapping("user/login")
     fun login(@RequestBody body: LoginRequestDto, response: HttpServletResponse): ResponseEntity<Any> {
-
-        //유효한 유저인지 검증하는 로직
-        //TODO: 숭실대 학생인지 검증하는 로직 추가 필요
-        userService.checkValidUser(body)
-
-        //JWT 생성
-        val jwt = userService.generateJwt(body)
-
-        //JWT를 저장
-        response.addHeader("Authorization", "$jwt")
+        userService.login(body,response)
         return ResponseEntity.ok("success")
     }
 
