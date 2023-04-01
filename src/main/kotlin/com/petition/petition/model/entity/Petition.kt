@@ -51,7 +51,7 @@ class Petition(
     var petitionType: PetitionType,
 
     @Column
-    var petitionImage: String? = null
+    var petitionImage: String? = null,
 
 ) : BaseEntity() {
 

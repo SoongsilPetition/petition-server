@@ -28,9 +28,8 @@ class UserController(
     }
 
 
-    //이거 이렇게 하면 안되고 userid를 받아서 그 id에 해당되는 유저를 리턴하는 방식으로 수정해야함함
     @GetMapping("myprofile")
-    fun user(
+    fun userProfile(
         @RequestHeader("Authorization") jwt: String?
     ): ResponseEntity<Any> {
         return try {
@@ -40,5 +39,4 @@ class UserController(
             ResponseEntity.status(401).body(UnauthenticatedException("unauthenticated"))
         }
     }
-
 }
