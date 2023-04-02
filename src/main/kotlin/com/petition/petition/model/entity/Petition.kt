@@ -43,7 +43,7 @@ class Petition(
     var category: MutableList<PetitionCategory> = mutableListOf(),
 
     @Column(nullable = false)
-    var likeCount: Long = 0, // 좋아요 갯수를 캐시를 이용해 처리
+    var agreeCount: Long = 0, // 동의 갯수를 캐시를 이용해 처리
 
     //글 작성 버튼을 누르는 순간 글이 뻘글인지, 분란글인지, 정상글인지 인공지능 서버가
     // 판단하여 보내준다. enumerated 컬럼 넣기
