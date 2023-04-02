@@ -51,16 +51,17 @@ class Petition(
     var petitionType: PetitionType,
 
     @Column
-    var petitionImage: String? = null
+    var petitionImage: String? = null,
 
 ) : BaseEntity() {
 
-    constructor(petitionTitle: String, petitionContent: String, users: User?, petitionType: PetitionType) : this(
+    constructor(petitionTitle: String, petitionContent: String, users: User?, petitionType: PetitionType, petitionImage: String?) : this(
         petitionId = 0,
         petitionTitle = petitionTitle,
         petitionContent = petitionContent,
         users = users,
-        petitionType = petitionType
+        petitionType = petitionType,
+        petitionImage = petitionImage
     )
 }
 

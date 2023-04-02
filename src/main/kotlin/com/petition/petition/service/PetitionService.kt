@@ -1,6 +1,7 @@
 package com.petition.petition.service
 
 import com.petition.petition.model.entity.Petition
+import com.petition.petition.model.entity.PetitionStatus
 import com.petition.petition.model.entity.PetitionType
 import com.petition.petition.model.entity.User
 import com.petition.petition.model.payload.petition.request.PetitionWriteRequestDto
@@ -9,7 +10,6 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 
 @Service
@@ -29,7 +29,8 @@ class PetitionService(
             petitionTitle = body.petitionTitle,
             petitionContent = body.petitionContent,
             users = user,
-            petitionType = petitionType
+            petitionType = petitionType,
+            petitionImage = body.petitionImage
         )
 
         //TODO: category를 forEach 반복문을 이용하여 작성
@@ -46,4 +47,11 @@ class PetitionService(
         return petitionRepository.getById(petitionId)
     }
 
+    fun getOngoingPetitionsList(): List<Petition>? {
+        return petitionRepository.findAllByPetitionType(PetitionStatus.ONGOING)
+    }
+
+    fun updatePetition(petition: Petition): Petition {
+        return petitionRepository.save(petition)
+    }
 }

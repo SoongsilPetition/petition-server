@@ -10,7 +10,9 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ConcurService(
@@ -18,6 +20,7 @@ class ConcurService(
     private val userService: UserService,
     private val petitionService: PetitionService
 ) {
+    //TODO: 청원 작성시, 청원 작성자는 자동으로 동의하도록
     fun saveConcur(
         body: ConcurWriteRequestDto,
         jwt: String
@@ -29,7 +32,7 @@ class ConcurService(
         val concur = Concur(
             concurContent = body.concurContents,
             user = user,
-            petition= petition,
+            petition = petition,
             agreementStatus = AgreementStatus.valueOf(body.agreementStatus)
         )
         return concurRepository.save(concur)
@@ -37,11 +40,14 @@ class ConcurService(
 
     fun getConcursList(petitionId: Int, page: Int, size: Int, agreementStatus: AgreementStatus): List<Concur>? {
         val pageRequest: Pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "createdAt")
-        val petition:Petition = petitionService.getPetition(petitionId)
-        val concurs: Page<Concur> = concurRepository.findAllByPetitionAndAgreementStatus(petition, agreementStatus,pageRequest)
+        val petition: Petition = petitionService.getPetition(petitionId)
+        val concurs: Page<Concur> =
+            concurRepository.findAllByPetitionAndAgreementStatus(petition, agreementStatus, pageRequest)
         return concurs.content
     }
 
-
-
+    @Transactional
+    fun aggregateConcur(petitionId: Int) {
+        val count: Int = concurRepository.countByPetitionAndAgreementStatus(petitionId, AgreementStatus.AGREE)
+    }
 }

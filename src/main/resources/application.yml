@@ -10,7 +10,7 @@ logging:
         orm:
           jpa: DEBUG
 server:
-  port:8080
+  port: 8080
   servlet:
     encoding:
       force-response: true

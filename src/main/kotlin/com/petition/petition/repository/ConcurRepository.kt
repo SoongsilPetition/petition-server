@@ -9,4 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ConcurRepository: JpaRepository<Concur, Int> {
     fun findAllByPetitionAndAgreementStatus(petition: Petition, agreementStatus: AgreementStatus, pageable: Pageable): Page<Concur>
+    fun countByPetitionAndAgreementStatus(petitionId: Int, agreementStatus: AgreementStatus): Int
 }
