@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,23 +19,26 @@ import org.springframework.transaction.annotation.Transactional
 class ConcurService(
     private val concurRepository: ConcurRepository,
     private val userService: UserService,
-    private val petitionService: PetitionService
+    private val petitionService: PetitionService,
+    private val kafkaProducer: KafkaProducer,
+    private val redisTemplate: RedisTemplate<String, String>
 ) {
+    fun concur(body: ConcurWriteRequestDto, jwt: String) {
+        val user: User? = userService.getValidUser(jwt)
+        if (user != null) {
+            kafkaProducer.sendConcurEvent(body.petitionId.toString(), user.userId.toString() ,body.concurContents,body.agreementStatus)
+        }
+    }
+
+    fun saveConcurToRedis(petitionId: String, userId: String) {
+        val key = "petition:$petitionId"
+        redisTemplate.opsForSet().add(key, userId)
+    }
+
     //TODO: 청원 작성시, 청원 작성자는 자동으로 동의하도록
     fun saveConcur(
-        body: ConcurWriteRequestDto,
-        jwt: String
+        concur:Concur
     ): Concur {
-        val user: User? = userService.getValidUser(jwt)
-        val petition: Petition = petitionService.getPetition(body.petitionId)
-
-        //TODO: Agreement클래스를 변환해야하는지 고민
-        val concur = Concur(
-            concurContent = body.concurContents,
-            user = user,
-            petition = petition,
-            agreementStatus = AgreementStatus.valueOf(body.agreementStatus)
-        )
         return concurRepository.save(concur)
     }
 

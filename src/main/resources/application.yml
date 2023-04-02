@@ -2,6 +2,14 @@ spring:
   profiles:
     active: prod
     include: secret
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: petition-group
+      auto-offset-reset: earliest
+  redis:
+    host: localhost
+    port: 6379
 
 logging:
   level:

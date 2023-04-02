@@ -1,19 +1,4 @@
 spring:
-  kafka:
-    bootstrap-servers: localhost:9092 # Kafka 서버의 호스트 및 포트 설정
-    consumer:
-      group-id: concur # Consumer 그룹 ID 설정
-      auto-offset-reset: earliest # 컨슈머 그룹에서 처음 시작할 때 메시지 오프셋을 어떻게 처리할 것인지 설정
-      properties:
-        # 직렬화 및 역직렬화를 위한 설정
-        key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
-        value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    producer:
-      properties:
-        # 직렬화 및 역직렬화를 위한 설정
-        key.serializer: org.apache.kafka.common.serialization.StringSerializer
-        value.serializer: org.apache.kafka.common.serialization.StringSerializer
-
   datasource: # mysql 관련 설정
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${MY_SQL_ADDRESS_PETITION}

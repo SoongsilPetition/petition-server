@@ -17,8 +17,9 @@ class ConcurController(
     fun postConcur(
         @RequestBody body: ConcurWriteRequestDto,
         @RequestHeader("Authorization") jwt: String
-    ):ResponseEntity<Concur> {
-        return ResponseEntity.ok(concurService.saveConcur(body,jwt))
+    ):ResponseEntity<Void> {
+        concurService.concur(body, jwt)
+        return ResponseEntity.ok().build()
     }
 
     //parameter를 받아서 최신순, 동의한 concur, 반대한 concur

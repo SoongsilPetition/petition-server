@@ -62,9 +62,10 @@ dependencies {
 
 	//apache kafka
 	implementation("org.apache.kafka:kafka-clients:3.0.0")
+
 	implementation("org.springframework.kafka:spring-kafka")
-
-
+	//redis
+	implementation("org.springframework.boot:spring-boot-starter-data-redis:2.5.6")
 }
 
 tasks.withType<KotlinCompile> {
