@@ -26,17 +26,5 @@ class UserController(
         userService.login(body,response)
         return ResponseEntity.ok("success")
     }
-
-
-    @GetMapping("myprofile")
-    fun userProfile(
-        @RequestHeader("Authorization") jwt: String?
-    ): ResponseEntity<Any> {
-        return try {
-            val user = userService.getValidUser(jwt)
-            ResponseEntity.ok(user)
-        } catch (e: Exception) {
-            ResponseEntity.status(401).body(UnauthenticatedException("unauthenticated"))
-        }
-    }
+    //TODO: myprofile 구현
 }
