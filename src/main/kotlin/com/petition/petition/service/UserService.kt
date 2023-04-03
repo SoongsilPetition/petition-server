@@ -5,6 +5,7 @@ import com.petition.petition.common.exception.UnauthenticatedException
 import com.petition.petition.model.payload.auth.request.LoginRequestDto
 import com.petition.petition.model.payload.auth.request.RegisterRequestDto
 import com.petition.petition.model.entity.User
+import com.petition.petition.model.payload.auth.response.UserResponseDto
 import com.petition.petition.repository.UserRepository
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -16,13 +17,21 @@ import javax.servlet.http.HttpServletResponse
 class UserService(
     private val userRepository: UserRepository
 ) {
-    fun saveUser(body: RegisterRequestDto): User {
+    fun saveUser(body: RegisterRequestDto): UserResponseDto {
         val user = User(
             password = body.password,
             name = body.name,
             email = body.email,
         )
-        return userRepository.save(user)
+        val savedUser = userRepository.save(user)
+        val responseDto = UserResponseDto(
+            userId = savedUser.userId,
+            name = user.name,
+            email = user.email,
+            createdAt = user.createdAt.toString(),
+            updatedAt = user.updatedAt.toString()
+        )
+        return responseDto
     }
 
     fun findByEmail(email: String): User? {

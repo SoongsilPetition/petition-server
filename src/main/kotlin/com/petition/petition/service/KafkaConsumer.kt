@@ -11,6 +11,7 @@ class KafkaConsumer(
     private val userService: UserService,
     private val petitionService: PetitionService
     ) {
+    /*
     @KafkaListener(topics = ["concur-events"], groupId = "petition-group")
     fun consume(concurEvent: String) {
         val (petitionId, userId,concurContents,agreementStatus) = concurEvent.split(",")
@@ -25,4 +26,6 @@ class KafkaConsumer(
         concurService.saveConcur(concur)
         concurService.saveConcurToRedis(petitionId, userId)
     }
+
+     */
 }

@@ -1,7 +1,6 @@
 package com.petition.petition.controller
 
 import com.petition.petition.model.entity.AgreementStatus
-import com.petition.petition.model.entity.Concur
 import com.petition.petition.model.payload.concur.request.ConcurWriteRequestDto
 import com.petition.petition.model.payload.concur.response.ConcurResponseDto
 import com.petition.petition.service.ConcurService
