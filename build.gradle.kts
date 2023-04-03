@@ -40,12 +40,6 @@ dependencies {
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 
-	//Mapstruct
-	implementation("org.mapstruct:mapstruct:1.4.2.Final")
-	annotationProcessor("org.mapstruct:mapstruct-processor:1.4.2.Final")
-	api("com.github.pozo:mapstruct-kotlin:1.3.1.2")
-	kapt("com.github.pozo:mapstruct-kotlin-processor:1.3.1.2")
-
 	//security
 	implementation("org.springframework.boot:spring-boot-starter-security")
 
@@ -66,7 +60,12 @@ dependencies {
 	implementation("com.amazonaws:aws-java-sdk-core:1.12.385")
 	implementation("com.amazonaws:aws-java-sdk-s3:1.12.385")
 
+	//apache kafka
+	implementation("org.apache.kafka:kafka-clients:3.0.0")
 
+	implementation("org.springframework.kafka:spring-kafka")
+	//redis
+	implementation("org.springframework.boot:spring-boot-starter-data-redis:2.5.6")
 }
 
 tasks.withType<KotlinCompile> {

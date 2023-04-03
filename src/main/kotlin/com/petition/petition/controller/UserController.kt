@@ -26,19 +26,5 @@ class UserController(
         userService.login(body,response)
         return ResponseEntity.ok("success")
     }
-
-
-    //이거 이렇게 하면 안되고 userid를 받아서 그 id에 해당되는 유저를 리턴하는 방식으로 수정해야함함
-    @GetMapping("myprofile")
-    fun user(
-        @RequestHeader("Authorization") jwt: String?
-    ): ResponseEntity<Any> {
-        return try {
-            val user = userService.getValidUser(jwt)
-            ResponseEntity.ok(user)
-        } catch (e: Exception) {
-            ResponseEntity.status(401).body(UnauthenticatedException("unauthenticated"))
-        }
-    }
-
+    //TODO: myprofile 구현
 }
