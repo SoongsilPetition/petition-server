@@ -3,6 +3,7 @@ package com.petition.petition.controller
 import com.petition.petition.model.entity.AgreementStatus
 import com.petition.petition.model.entity.Concur
 import com.petition.petition.model.payload.concur.request.ConcurWriteRequestDto
+import com.petition.petition.model.payload.concur.response.ConcurResponseDto
 import com.petition.petition.service.ConcurService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -17,7 +18,7 @@ class ConcurController(
     fun postConcur(
         @RequestBody body: ConcurWriteRequestDto,
         @RequestHeader("Authorization") jwt: String
-    ):ResponseEntity<Concur> {
+    ):ResponseEntity<ConcurResponseDto> {
         return ResponseEntity.ok(concurService.saveConcur(body,jwt))
     }
 
@@ -29,7 +30,7 @@ class ConcurController(
         @RequestParam(required = false, defaultValue = "AGREE") agreementStatus: AgreementStatus, //sort가 string이 맞나?
         @RequestParam(required = false, defaultValue = "1") page: Int,
         @RequestParam(required = false, defaultValue = "10") size: Int
-    ):ResponseEntity<*>{
+    ):ResponseEntity<List<ConcurResponseDto>>{
         return ResponseEntity.ok(concurService.getConcursList(petitionId, page,size,agreementStatus))
     }
 }
