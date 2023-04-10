@@ -4,6 +4,7 @@ import com.petition.petition.model.entity.AgreementStatus
 import com.petition.petition.model.entity.Concur
 import com.petition.petition.model.entity.Petition
 import com.petition.petition.model.entity.User
+import com.petition.petition.model.payload.auth.response.UserResponseDto
 import com.petition.petition.model.payload.concur.request.ConcurWriteRequestDto
 import com.petition.petition.model.payload.concur.response.ConcurResponseDto
 import com.petition.petition.repository.ConcurRepository
@@ -34,13 +35,20 @@ class ConcurService(
             agreementStatus = AgreementStatus.valueOf(body.agreementStatus)
         )
         concurRepository.save(concur)
+        val userResponseDto = UserResponseDto(
+            userId = user?.userId,
+            name = user?.name,
+            email = user?.email,
+            createdAt = user?.createdAt.toString(),
+            updatedAt = user?.updatedAt.toString()
+        )
         return ConcurResponseDto(
             concurId = concur.concurId,
             concurContent = concur.concurContent,
             agreementStatus = concur.agreementStatus.toString(),
             createdAt = concur.createdAt.toString(),
             updatedAt = concur.updatedAt.toString(),
-            user = concur.user
+            user = userResponseDto
         )
     }
 
@@ -55,7 +63,13 @@ class ConcurService(
                 agreementStatus = it.agreementStatus.toString(),
                 createdAt = it.createdAt.toString(),
                 updatedAt = it.updatedAt.toString(),
-                user = it.user
+                user = UserResponseDto(
+                    userId = it.user?.userId,
+                    name = it.user?.name,
+                    email = it.user?.email,
+                    createdAt = it.user?.createdAt.toString(),
+                    updatedAt = it.user?.updatedAt.toString()
+                )
             )
         }
     }
