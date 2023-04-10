@@ -4,12 +4,21 @@ import com.petition.petition.model.entity.AgreementStatus
 import com.petition.petition.model.payload.concur.request.ConcurWriteRequestDto
 import com.petition.petition.model.payload.concur.response.ConcurResponseDto
 import com.petition.petition.service.ConcurService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.ExampleObject
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 
 //청원의경우 청원 수정, 청원 취소는 없음
 @RestController
+@Tag(name = "ConcurController", description = "청원 의견 제기 API")
 class ConcurController(
     private val concurService: ConcurService
 ) {

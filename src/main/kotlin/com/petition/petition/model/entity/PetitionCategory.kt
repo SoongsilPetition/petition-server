@@ -18,4 +18,10 @@ class PetitionCategory(
     @JoinColumn(name = "category_id")
     val category: Category
 
-): BaseEntity()
+): BaseEntity(){
+    constructor(petition: Petition, category: Category) : this(
+        petitionCategoryId = 0,
+        petition = petition,
+        category = category
+    )
+}

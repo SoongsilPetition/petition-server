@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service
 class PetitionService(
     private val petitionRepository: PetitionRepository,
     private val userService: UserService,
+    private val petitionCategoryService: PetitionCategoryService
 ) {
     fun savePetition(body: PetitionWriteRequestDto, jwt:String): Petition {
         val user: User? = userService.getValidUser(jwt)
@@ -24,7 +25,6 @@ class PetitionService(
         //Question: petitionType을 Petition엔티티 파일아래에 두는게 아닌 파일을 분리해야하는지 고민
         val petitionType: PetitionType = PetitionType.APPROPRIATE
 
-
         val petition = Petition(
             petitionTitle = body.petitionTitle,
             petitionContent = body.petitionContent,
@@ -32,6 +32,8 @@ class PetitionService(
             petitionType = petitionType,
             petitionImage = body.petitionImage
         )
+        val petitionCategories = petitionCategoryService.savePetitionCategories(body.petitionCategory, petition)
+        petition.category = petitionCategories
 
         //TODO: category를 forEach 반복문을 이용하여 작성
         return petitionRepository.save(petition)

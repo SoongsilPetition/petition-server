@@ -12,4 +12,9 @@ class Category(
     @Column
     var categoryName:String
 
-):BaseEntity()
+):BaseEntity(){
+    constructor(categoryName: String) : this(
+        categoryId = 0,
+        categoryName = categoryName
+    )
+}

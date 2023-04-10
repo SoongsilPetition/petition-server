@@ -36,11 +36,11 @@ class Petition(
 
     @JsonBackReference //순환참조 방지
     @OneToMany(mappedBy = "petition", cascade = [CascadeType.ALL])
-    var concur: MutableList<Concur> = mutableListOf(),
+    var concur: List<Concur> = mutableListOf(),
 
     //해쉬태그와 비슷한 기능으로.. 이해해달라
     @OneToMany(mappedBy = "petition", cascade = [CascadeType.ALL])
-    var category: MutableList<PetitionCategory> = mutableListOf(),
+    var category: List<PetitionCategory>? = mutableListOf(),
 
     @Column(nullable = false)
     var agreeCount: Long = 0, // 동의 갯수를 캐시를 이용해 처리
