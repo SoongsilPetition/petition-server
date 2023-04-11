@@ -40,6 +40,7 @@ class PetitionCategoryService(
                     petitionCategoryList.add(petitionCategory)
                 }
             }
+            println(petitionCategoryList)
             return petitionCategoryList
         }
         return null

@@ -35,20 +35,20 @@ class ConcurService(
             agreementStatus = AgreementStatus.valueOf(body.agreementStatus)
         )
         concurRepository.save(concur)
-        val userResponseDto = UserResponseDto(
-            userId = user?.userId,
-            name = user?.name,
-            email = user?.email,
-            createdAt = user?.createdAt.toString(),
-            updatedAt = user?.updatedAt.toString()
-        )
+
         return ConcurResponseDto(
             concurId = concur.concurId,
             concurContent = concur.concurContent,
             agreementStatus = concur.agreementStatus.toString(),
             createdAt = concur.createdAt.toString(),
             updatedAt = concur.updatedAt.toString(),
-            user = userResponseDto
+            user = UserResponseDto(
+                userId = user?.userId,
+                name = user?.name,
+                email = user?.email,
+                createdAt = user?.createdAt.toString(),
+                updatedAt = user?.updatedAt.toString()
+            )
         )
     }
 

@@ -2,6 +2,7 @@ package com.petition.petition.controller
 
 import com.petition.petition.model.entity.Petition
 import com.petition.petition.model.payload.petition.request.PetitionWriteRequestDto
+import com.petition.petition.model.payload.petition.response.PetitionResponseDto
 import com.petition.petition.service.PetitionService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -16,11 +17,11 @@ class PetitionController(
     fun postPetition(
         @RequestBody body: PetitionWriteRequestDto,
         @RequestHeader("Authorization") jwt: String
-    ): ResponseEntity<Petition> {
+    ): ResponseEntity<PetitionResponseDto> {
         return ResponseEntity.ok(petitionService.savePetition(body, jwt))
     }
 
-    //TODO: 페이징처리해서 가져오는데 concur하고 내용까지 가져오는걸 수정해서
+    //TODO: 최신순, 동의 많은순 정렬 기능 추가
     //필요한 내용만 가져오도록 수정
     @GetMapping("petition") //petition 리스트 가져오기
     fun getPetitions(

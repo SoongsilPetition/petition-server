@@ -1,10 +1,10 @@
 package com.petition.petition.service
 
-import com.petition.petition.model.entity.Petition
-import com.petition.petition.model.entity.PetitionStatus
-import com.petition.petition.model.entity.PetitionType
-import com.petition.petition.model.entity.User
+import com.petition.petition.model.entity.*
+import com.petition.petition.model.payload.auth.response.UserResponseDto
 import com.petition.petition.model.payload.petition.request.PetitionWriteRequestDto
+import com.petition.petition.model.payload.petition.response.PetitionResponseDto
+import com.petition.petition.model.payload.petitionCategory.response.PetitionCategoryResponseDto
 import com.petition.petition.repository.PetitionRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -18,7 +18,7 @@ class PetitionService(
     private val userService: UserService,
     private val petitionCategoryService: PetitionCategoryService
 ) {
-    fun savePetition(body: PetitionWriteRequestDto, jwt:String): Petition {
+    fun savePetition(body: PetitionWriteRequestDto, jwt:String): PetitionResponseDto {
         val user: User? = userService.getValidUser(jwt)
         //TODO:글 내용을 인공 지능 서버와 소통해서 분란글, 정상글, 뻘글인지 분류.
         //일단은 APPROPRIATE로 저장
@@ -30,13 +30,29 @@ class PetitionService(
             petitionContent = body.petitionContent,
             users = user,
             petitionType = petitionType,
-            petitionImage = body.petitionImage
+            petitionImage = body.petitionImage,
         )
         val petitionCategories = petitionCategoryService.savePetitionCategories(body.petitionCategory, petition)
         petition.category = petitionCategories
-
+        val petitionCategoryResponseDtoList = mutableListOf<PetitionCategoryResponseDto>()
+        petitionCategories?.forEach { petitionCategory ->
+            val petitionCategoryResponseDto = PetitionCategoryResponseDto(
+                petitionCategoryId = petitionCategory.petitionCategoryId,
+                petitionCategoryName = petitionCategory.category.categoryName
+            )
+            petitionCategoryResponseDtoList.add(petitionCategoryResponseDto)
+        }
         //TODO: category를 forEach 반복문을 이용하여 작성
-        return petitionRepository.save(petition)
+        val savedPetition = petitionRepository.save(petition)
+        val response: PetitionResponseDto= PetitionResponseDto(
+            petitionId = savedPetition.petitionId,
+            petitionTitle = savedPetition.petitionTitle,
+            petitionContent = savedPetition.petitionContent,
+            petitionImage = savedPetition.petitionImage,
+            petitionCategory = petitionCategoryResponseDtoList,
+        )
+        return response
+
     }
 
     fun getPetitionsList(page: Int, size: Int): List<Petition>? {
