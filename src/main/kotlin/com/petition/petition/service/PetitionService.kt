@@ -18,6 +18,7 @@ class PetitionService(
     private val userService: UserService,
     private val petitionCategoryService: PetitionCategoryService
 ) {
+
     fun savePetition(body: PetitionWriteRequestDto, jwt:String): PetitionResponseDto {
         val user: User? = userService.getValidUser(jwt)
         //TODO:글 내용을 인공 지능 서버와 소통해서 분란글, 정상글, 뻘글인지 분류.
@@ -122,6 +123,8 @@ class PetitionService(
             petitionContent = findPetition.petitionContent,
             petitionImage = findPetition.petitionImage,
             petitionCategory = petitionCategoryResponseDtoList,
+            petitionAgreement = findPetition.agreeCount,
+            petitionDisagreement = findPetition.disagreeCount,
             user = UserResponseDto(
                 userId = findPetition.users?.userId,
                 name = findPetition.users?.name,

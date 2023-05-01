@@ -27,7 +27,6 @@ class ConcurService(
         val user: User? = userService.getValidUser(jwt)
         val petition: Petition = petitionService.getValidatedPetition(body.petitionId)
 
-        //TODO: Agreement클래스를 변환해야하는지 고민
         val concur = Concur(
             concurContent = body.concurContents,
             user = user,
@@ -35,6 +34,14 @@ class ConcurService(
             agreementStatus = AgreementStatus.valueOf(body.agreementStatus)
         )
         concurRepository.save(concur)
+        //TODO: 청원 동의/비동의 여부에 따라 petition테이블에 저장된 동의/비동의 수 변경
+
+        if(concur.agreementStatus == AgreementStatus.AGREE){
+            petition.agreeCount += 1
+        }else{
+            petition.disagreeCount += 1
+        }
+        petitionService.updatePetition(petition)
 
         return ConcurResponseDto(
             concurId = concur.concurId,
