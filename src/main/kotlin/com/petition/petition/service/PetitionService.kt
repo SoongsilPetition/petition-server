@@ -67,16 +67,45 @@ class PetitionService(
 
     }
 
-    fun getPetitionsList(page: Int, size: Int): List<Petition>? {
+    fun getPetitionsList(page: Int, size: Int): List<PetitionResponseDto>? {
         val pageRequest: Pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "createdAt")
         val petitions: Page<Petition> = petitionRepository.findAll(pageRequest)
-        return petitions.content
+        val petitionResponseDtoList = mutableListOf<PetitionResponseDto>()
+        petitions.forEach { petition ->
+            val petitionCategoryResponseDtoList = mutableListOf<PetitionCategoryResponseDto>()
+            val findPetitionCategory = petitionCategoryService.getPetitionCategories(petition)
+            findPetitionCategory?.forEach { petitionCategory ->
+                val petitionCategoryResponseDto = PetitionCategoryResponseDto(
+                    petitionCategoryId = petitionCategory.petitionCategoryId,
+                    petitionCategoryName = petitionCategory.category.categoryName
+                )
+                petitionCategoryResponseDtoList.add(petitionCategoryResponseDto)
+            }
+            val petitionResponseDto = PetitionResponseDto(
+                petitionId = petition.petitionId,
+                petitionTitle = petition.petitionTitle,
+                petitionContent = petition.petitionContent,
+                petitionImage = petition.petitionImage,
+                petitionCategory = petitionCategoryResponseDtoList,
+                petitionAgreement = petition.agreeCount,
+                petitionDisagreement = petition.disagreeCount,
+                user = UserResponseDto(
+                    userId = petition.users?.userId,
+                    name = petition.users?.name,
+                    email = petition.users?.email,
+                    createdAt = petition.users?.createdAt,
+                    updatedAt  = petition.users?.updatedAt
+                ),
+            )
+            petitionResponseDtoList.add(petitionResponseDto)
+        }
+        return petitionResponseDtoList
     }
-    fun getSpecificPetition(petitionId: Int): Petition {
+    fun getValidatedPetition(petitionId: Int): Petition {
         return petitionRepository.getById(petitionId)
     }
     fun getPetition(petitionId: Int): PetitionResponseDto{
-        val findPetition = petitionRepository.getById(petitionId)
+        val findPetition = getValidatedPetition(petitionId)
 
         val findPetitionCategory = petitionCategoryService.getPetitionCategories(findPetition)
         val petitionCategoryResponseDtoList = mutableListOf<PetitionCategoryResponseDto>()
