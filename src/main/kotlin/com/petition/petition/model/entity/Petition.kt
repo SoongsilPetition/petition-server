@@ -39,6 +39,7 @@ class Petition(
     var concur: List<Concur> = mutableListOf(),
 
     //해쉬태그와 비슷한 기능으로.. 이해해달라
+    @JsonBackReference
     @OneToMany(mappedBy = "petition", cascade = [CascadeType.ALL])
     var category: List<PetitionCategory>? = mutableListOf(),
 

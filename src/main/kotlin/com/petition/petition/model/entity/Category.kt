@@ -1,5 +1,6 @@
 package com.petition.petition.model.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import javax.persistence.*
 
 @Entity
@@ -10,9 +11,14 @@ class Category(
     var categoryId: Int,
 
     @Column
-    var categoryName:String
+    var categoryName: String,
 
-):BaseEntity(){
+    @JsonBackReference
+    @OneToMany(mappedBy = "category", cascade = [CascadeType.ALL])
+    var category: List<PetitionCategory>? = mutableListOf(),
+
+
+    ) : BaseEntity() {
     constructor(categoryName: String) : this(
         categoryId = 0,
         categoryName = categoryName

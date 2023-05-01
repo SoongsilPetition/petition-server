@@ -40,9 +40,12 @@ class PetitionCategoryService(
                     petitionCategoryList.add(petitionCategory)
                 }
             }
-            println(petitionCategoryList)
             return petitionCategoryList
         }
         return null
+    }
+
+    fun getPetitionCategories(petition: Petition): List<PetitionCategory>? {
+        return petitionCategoryRepository.findPetitionCategoriesByPetition(petition)
     }
 }

@@ -25,7 +25,7 @@ class ConcurService(
         jwt: String
     ): ConcurResponseDto {
         val user: User? = userService.getValidUser(jwt)
-        val petition: Petition = petitionService.getPetition(body.petitionId)
+        val petition: Petition = petitionService.getSpecificPetition(body.petitionId)
 
         //TODO: Agreement클래스를 변환해야하는지 고민
         val concur = Concur(
@@ -46,15 +46,15 @@ class ConcurService(
                 userId = user?.userId,
                 name = user?.name,
                 email = user?.email,
-                createdAt = user?.createdAt.toString(),
-                updatedAt = user?.updatedAt.toString()
+                createdAt = user?.createdAt,
+                updatedAt = user?.updatedAt
             )
         )
     }
 
     fun getConcursList(petitionId: Int, page: Int, size: Int, agreementStatus: AgreementStatus): List<ConcurResponseDto>? {
         val pageRequest: Pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "createdAt")
-        val petition:Petition = petitionService.getPetition(petitionId)
+        val petition:Petition = petitionService.getSpecificPetition(petitionId)
         val concurs: Page<Concur> = concurRepository.findAllByPetitionAndAgreementStatus(petition, agreementStatus,pageRequest)
         return concurs.content.map {
             ConcurResponseDto(
@@ -67,8 +67,8 @@ class ConcurService(
                     userId = it.user?.userId,
                     name = it.user?.name,
                     email = it.user?.email,
-                    createdAt = it.user?.createdAt.toString(),
-                    updatedAt = it.user?.updatedAt.toString()
+                    createdAt = it.user?.createdAt,
+                    updatedAt = it.user?.updatedAt
                 )
             )
         }

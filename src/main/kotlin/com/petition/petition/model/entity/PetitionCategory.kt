@@ -1,5 +1,6 @@
 package com.petition.petition.model.entity
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import javax.persistence.*
 
 
@@ -12,10 +13,12 @@ class PetitionCategory(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "petition_id")
+    @JsonManagedReference
     val petition: Petition,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
+    @JsonManagedReference
     val category: Category
 
 ): BaseEntity(){

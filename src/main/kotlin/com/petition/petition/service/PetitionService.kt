@@ -32,24 +32,36 @@ class PetitionService(
             petitionType = petitionType,
             petitionImage = body.petitionImage,
         )
+        //petition을 일단 저장하고 category를 추가하는 방식으로 설정
+        petitionRepository.save(petition)
         val petitionCategories = petitionCategoryService.savePetitionCategories(body.petitionCategory, petition)
         petition.category = petitionCategories
         val petitionCategoryResponseDtoList = mutableListOf<PetitionCategoryResponseDto>()
         petitionCategories?.forEach { petitionCategory ->
+            println(petitionCategory.category.categoryName)
             val petitionCategoryResponseDto = PetitionCategoryResponseDto(
                 petitionCategoryId = petitionCategory.petitionCategoryId,
                 petitionCategoryName = petitionCategory.category.categoryName
             )
             petitionCategoryResponseDtoList.add(petitionCategoryResponseDto)
         }
-        //TODO: category를 forEach 반복문을 이용하여 작성
+
+        //category를 추가하여 다시 저장
         val savedPetition = petitionRepository.save(petition)
+
         val response: PetitionResponseDto= PetitionResponseDto(
             petitionId = savedPetition.petitionId,
             petitionTitle = savedPetition.petitionTitle,
             petitionContent = savedPetition.petitionContent,
             petitionImage = savedPetition.petitionImage,
             petitionCategory = petitionCategoryResponseDtoList,
+            user = UserResponseDto(
+                userId = savedPetition.users?.userId,
+                name = savedPetition.users?.name,
+                email = savedPetition.users?.email,
+                createdAt = savedPetition.users?.createdAt,
+                updatedAt  = savedPetition.users?.updatedAt
+            ),
         )
         return response
 
@@ -60,9 +72,35 @@ class PetitionService(
         val petitions: Page<Petition> = petitionRepository.findAll(pageRequest)
         return petitions.content
     }
-
-    fun getPetition(petitionId: Int): Petition{
+    fun getSpecificPetition(petitionId: Int): Petition {
         return petitionRepository.getById(petitionId)
+    }
+    fun getPetition(petitionId: Int): PetitionResponseDto{
+        val findPetition = petitionRepository.getById(petitionId)
+
+        val findPetitionCategory = petitionCategoryService.getPetitionCategories(findPetition)
+        val petitionCategoryResponseDtoList = mutableListOf<PetitionCategoryResponseDto>()
+        findPetitionCategory?.forEach { petitionCategory ->
+            val petitionCategoryResponseDto = PetitionCategoryResponseDto(
+                petitionCategoryId = petitionCategory.petitionCategoryId,
+                petitionCategoryName = petitionCategory.category.categoryName
+            )
+            petitionCategoryResponseDtoList.add(petitionCategoryResponseDto)
+        }
+        return PetitionResponseDto(
+            petitionId = findPetition.petitionId,
+            petitionTitle = findPetition.petitionTitle,
+            petitionContent = findPetition.petitionContent,
+            petitionImage = findPetition.petitionImage,
+            petitionCategory = petitionCategoryResponseDtoList,
+            user = UserResponseDto(
+                userId = findPetition.users?.userId,
+                name = findPetition.users?.name,
+                email = findPetition.users?.email,
+                createdAt = findPetition.users?.createdAt,
+                updatedAt  = findPetition.users?.updatedAt
+            ),
+        )
     }
 
     fun getOngoingPetitionsList(): List<Petition>? {
