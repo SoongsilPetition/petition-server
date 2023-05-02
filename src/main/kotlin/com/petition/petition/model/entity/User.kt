@@ -30,6 +30,11 @@ class User(
     @JsonBackReference //순환참조 방지
     @OneToMany(mappedBy = "users", cascade = [CascadeType.ALL])
     var petitions: MutableList<Petition> = mutableListOf(),
+
+    @JsonBackReference //순환참조 방지
+    @OneToMany(mappedBy = "users", cascade = [CascadeType.ALL])
+    var petitionAnswers: MutableList<PetitionAnswer> = mutableListOf(),
+
 ) : BaseEntity() {
 
     init {

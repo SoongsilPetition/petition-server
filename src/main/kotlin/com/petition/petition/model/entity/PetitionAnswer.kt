@@ -31,4 +31,13 @@ data class PetitionAnswer(
     @JoinColumn(name = "petition_id")
     var petition: Petition,
 
-) : BaseEntity()
+) : BaseEntity(){
+    constructor(petitionAnswerTitle:String,petitionAnswerContent: String, petition: Petition, user: User?,petitionAnswerImage: String?) : this(
+        0,
+        petitionAnswerTitle,
+        petitionAnswerContent,
+        petitionAnswerImage,
+        user,
+        petition,
+    )
+}

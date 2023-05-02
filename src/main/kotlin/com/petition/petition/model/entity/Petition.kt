@@ -57,6 +57,10 @@ class Petition(
     @Column
     var petitionImage: String? = null,
 
+    @JsonBackReference
+    @OneToOne(mappedBy = "petition", cascade = [CascadeType.ALL])
+    var petitionAnswer: PetitionAnswer? = null,
+
 ) : BaseEntity() {
 
     constructor(petitionTitle: String, petitionContent: String, users: User?, petitionType: PetitionType, petitionImage: String?) : this(
