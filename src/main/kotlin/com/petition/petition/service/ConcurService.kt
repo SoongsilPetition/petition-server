@@ -82,5 +82,24 @@ class ConcurService(
     }
 
 
-
+    fun getUserConcursList(userId:Int,page: Int,size: Int):List<ConcurResponseDto>{
+        val pageRequest: Pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "createdAt")
+        val findConcurs = concurRepository.findAllByUser_UserId(userId,pageRequest)
+        return findConcurs.content.map {
+            ConcurResponseDto(
+                concurId = it.concurId,
+                concurContent = it.concurContent,
+                agreementStatus = it.agreementStatus.toString(),
+                createdAt = it.createdAt.toString(),
+                updatedAt = it.updatedAt.toString(),
+                user = UserResponseDto(
+                    userId = it.user?.userId,
+                    name = it.user?.name,
+                    email = it.user?.email,
+                    createdAt = it.user?.createdAt,
+                    updatedAt = it.user?.updatedAt
+                )
+            )
+        }
+    }
 }

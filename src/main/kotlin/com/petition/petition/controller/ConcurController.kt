@@ -31,14 +31,21 @@ class ConcurController(
     }
 
     //parameter를 받아서 최신순, 동의한 concur, 반대한 concur
-    //TODO: 특정 petition의 concur를 가져오는걸 어떻게 할건지 고민해보기
     @GetMapping("concur")
     fun getConcur(
         @RequestParam(required = true) petitionId: Int,
         @RequestParam(required = false, defaultValue = "AGREE") agreementStatus: AgreementStatus, //sort가 string이 맞나?
         @RequestParam(required = false, defaultValue = "1") page: Int,
-        @RequestParam(required = false, defaultValue = "10") size: Int
+        @RequestParam(required = false, defaultValue = "10") size: Int,
     ):ResponseEntity<List<ConcurResponseDto>>{
         return ResponseEntity.ok(concurService.getConcursList(petitionId, page,size,agreementStatus))
+    }
+    @GetMapping("user/concur")
+    fun getUserConcur(
+        @RequestParam(required = true) userId: Int,
+        @RequestParam(required = false, defaultValue = "1") page: Int,
+        @RequestParam(required = false, defaultValue = "10") size: Int,
+    ):ResponseEntity<List<ConcurResponseDto>>{
+        return ResponseEntity.ok(concurService.getUserConcursList(userId, page,size))
     }
 }

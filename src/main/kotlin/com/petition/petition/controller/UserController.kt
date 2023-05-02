@@ -27,5 +27,4 @@ class UserController(
         userService.login(body,response)
         return ResponseEntity.ok("success")
     }
-    //TODO: myprofile 구현
 }
