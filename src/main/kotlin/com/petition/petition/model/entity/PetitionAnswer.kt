@@ -26,7 +26,7 @@ data class PetitionAnswer(
     @JoinColumn(name = "user_id")
     var users: User?,
 
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.REMOVE])
     @JsonManagedReference
     @JoinColumn(name = "petition_id")
     var petition: Petition,
