@@ -68,13 +68,13 @@ class PetitionService(
 
     }
 
-    fun getPetitionsList(page: Int, size: Int, sort: String,category:String): List<PetitionResponseDto>? {
+    fun getPetitionsList(page: Int, size: Int, sort: String,category:String?): List<PetitionResponseDto>? {
         val pageRequest: Pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC, sort)
         val petitions: Page<Petition>
         if(category==null){
             petitions = petitionRepository.findAll(pageRequest)
         }else{
-            petitions = petitionRepository.findAllByCategoryContains(category,pageRequest)
+            petitions = petitionRepository.findAllByCategoryNames(category,pageRequest)
         }
         val petitionResponseDtoList = mutableListOf<PetitionResponseDto>()
         petitions.forEach { petition ->

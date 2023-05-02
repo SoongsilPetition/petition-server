@@ -31,7 +31,7 @@ class PetitionController(
         @RequestParam(required = false, defaultValue = "10") size: Int,
         //agreeCount을 쿼리로 sort 요청보내면 결과 리턴
         @RequestParam(required = false, defaultValue = "createdAt") sort: String,
-        @RequestParam(required = false) category: String
+        @RequestParam(required = false) category: String?
     ): ResponseEntity<*> {
         return ResponseEntity.ok(petitionService.getPetitionsList(page, size, sort,category))
     }
