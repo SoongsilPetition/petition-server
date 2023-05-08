@@ -1,6 +1,7 @@
 package com.petition.petition.service
 
 import com.petition.petition.model.entity.PetitionAnswer
+import com.petition.petition.model.payload.auth.response.UserResponseDto
 import com.petition.petition.model.payload.petitionAnswer.request.PetitionAnswerWriteRequestDto
 import com.petition.petition.model.payload.petitionAnswer.response.PetitionAnswerResponseDto
 import com.petition.petition.repository.PetitionAnswerRepository
@@ -25,13 +26,19 @@ class PetitionAnswerService(
             user = findUser
         )
         petitionAnswerRepository.save(petitionAnswer)
-
+        val userResponse = UserResponseDto(
+            userId = findUser?.userId,
+            name = findUser?.name,
+            email = findUser?.email,
+            createdAt = findUser?.createdAt,
+            updatedAt = findUser?.updatedAt
+        )
         val response = PetitionAnswerResponseDto(
             petitionAnswerId = petitionAnswer.petitionAnswerId,
             petitionAnswerTitle = petitionAnswer.petitionAnswerTitle,
             petitionAnswerContent = petitionAnswer.petitionAnswerContent,
             petitionAnswerImage = petitionAnswer.petitionAnswerImage,
-            user = petitionAnswer.users,
+            user = userResponse,
             petitionId = petitionAnswer.petition.petitionId,
             createdAt = petitionAnswer.createdAt.toString(),
             updatedAt = petitionAnswer.updatedAt.toString()
@@ -41,12 +48,19 @@ class PetitionAnswerService(
 
     fun getPetitionAnswer(petitionId: Int): PetitionAnswerResponseDto {
         val petitionAnswer = petitionAnswerRepository.findByPetition_PetitionId(petitionId)
+        val userResponse = UserResponseDto(
+            userId = petitionAnswer.users?.userId,
+            name = petitionAnswer.users?.name,
+            email = petitionAnswer.users?.email,
+            createdAt = petitionAnswer.users?.createdAt,
+            updatedAt = petitionAnswer.users?.updatedAt
+        )
         val response: PetitionAnswerResponseDto = PetitionAnswerResponseDto(
             petitionAnswerId = petitionAnswer.petitionAnswerId,
             petitionAnswerTitle = petitionAnswer.petitionAnswerTitle,
             petitionAnswerContent = petitionAnswer.petitionAnswerContent,
             petitionAnswerImage = petitionAnswer.petitionAnswerImage,
-            user = petitionAnswer.users,
+            user = userResponse,
             petitionId = petitionAnswer.petition.petitionId,
             createdAt = petitionAnswer.createdAt.toString(),
             updatedAt = petitionAnswer.updatedAt.toString()
@@ -65,13 +79,21 @@ class PetitionAnswerService(
             findPetitionAnswer.petitionAnswerImage = body.petitionAnswerImage
         }
         petitionAnswerRepository.save(findPetitionAnswer)
+        val userResponse = UserResponseDto(
+            userId = findUser?.userId,
+            name = findUser?.name,
+            email = findUser?.email,
+            createdAt = findUser?.createdAt,
+            updatedAt = findUser?.updatedAt
+        )
+
 
         val response = PetitionAnswerResponseDto(
             petitionAnswerId = findPetitionAnswer.petitionAnswerId,
             petitionAnswerTitle = findPetitionAnswer.petitionAnswerTitle,
             petitionAnswerContent = findPetitionAnswer.petitionAnswerContent,
             petitionAnswerImage = findPetitionAnswer.petitionAnswerImage,
-            user = findPetitionAnswer.users,
+            user = userResponse,
             petitionId = findPetitionAnswer.petition.petitionId,
             createdAt = findPetitionAnswer.createdAt.toString(),
             updatedAt = findPetitionAnswer.updatedAt.toString()
