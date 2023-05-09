@@ -1,11 +1,10 @@
 package com.petition.petition.model.payload.auth.response
 
-import java.time.LocalDateTime
 
 data class UserResponseDto(
     val userId: Int?,
     val name: String?,
     val email: String?,
-    val createdAt: LocalDateTime?,
-    val updatedAt: LocalDateTime?
+    val createdAt: String?,
+    val updatedAt: String?
 )

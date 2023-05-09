@@ -11,6 +11,7 @@ data class PetitionResponseDto (
     val petitionCategory: List<PetitionCategoryResponseDto>? = null,
     val petitionAgreement: Int = 0,
     val petitionDisagreement: Int = 0,
-    val user: UserResponseDto? = null
-
+    val user: UserResponseDto? = null,
+    val createdAt: String = "",
+    val updatedAt: String = "",
 )

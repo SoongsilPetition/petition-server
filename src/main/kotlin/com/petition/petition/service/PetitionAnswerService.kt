@@ -30,8 +30,8 @@ class PetitionAnswerService(
             userId = findUser?.userId,
             name = findUser?.name,
             email = findUser?.email,
-            createdAt = findUser?.createdAt,
-            updatedAt = findUser?.updatedAt
+            createdAt = findUser?.createdAt.toString(),
+            updatedAt = findUser?.updatedAt.toString()
         )
         val response = PetitionAnswerResponseDto(
             petitionAnswerId = petitionAnswer.petitionAnswerId,
@@ -52,8 +52,8 @@ class PetitionAnswerService(
             userId = petitionAnswer.users?.userId,
             name = petitionAnswer.users?.name,
             email = petitionAnswer.users?.email,
-            createdAt = petitionAnswer.users?.createdAt,
-            updatedAt = petitionAnswer.users?.updatedAt
+            createdAt = petitionAnswer.users?.createdAt.toString(),
+            updatedAt = petitionAnswer.users?.updatedAt.toString()
         )
         val response: PetitionAnswerResponseDto = PetitionAnswerResponseDto(
             petitionAnswerId = petitionAnswer.petitionAnswerId,
@@ -83,8 +83,8 @@ class PetitionAnswerService(
             userId = findUser?.userId,
             name = findUser?.name,
             email = findUser?.email,
-            createdAt = findUser?.createdAt,
-            updatedAt = findUser?.updatedAt
+            createdAt = findUser?.createdAt.toString(),
+            updatedAt = findUser?.updatedAt.toString()
         )
 
 

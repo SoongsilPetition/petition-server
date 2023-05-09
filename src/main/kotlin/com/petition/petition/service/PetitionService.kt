@@ -60,8 +60,8 @@ class PetitionService(
                 userId = savedPetition.users?.userId,
                 name = savedPetition.users?.name,
                 email = savedPetition.users?.email,
-                createdAt = savedPetition.users?.createdAt,
-                updatedAt  = savedPetition.users?.updatedAt
+                createdAt = savedPetition.users?.createdAt.toString(),
+                updatedAt  = savedPetition.users?.updatedAt.toString()
             ),
         )
         return response
@@ -99,8 +99,8 @@ class PetitionService(
                     userId = petition.users?.userId,
                     name = petition.users?.name,
                     email = petition.users?.email,
-                    createdAt = petition.users?.createdAt,
-                    updatedAt  = petition.users?.updatedAt
+                    createdAt = petition.users?.createdAt.toString(),
+                    updatedAt  = petition.users?.updatedAt.toString()
                 ),
             )
             petitionResponseDtoList.add(petitionResponseDto)
@@ -134,8 +134,8 @@ class PetitionService(
                 userId = findPetition.users?.userId,
                 name = findPetition.users?.name,
                 email = findPetition.users?.email,
-                createdAt = findPetition.users?.createdAt,
-                updatedAt  = findPetition.users?.updatedAt
+                createdAt = findPetition.users?.createdAt.toString(),
+                updatedAt  = findPetition.users?.updatedAt.toString()
             ),
         )
     }

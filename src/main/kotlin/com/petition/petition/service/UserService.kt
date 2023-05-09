@@ -28,8 +28,8 @@ class UserService(
             userId = savedUser.userId,
             name = user.name,
             email = user.email,
-            createdAt = user.createdAt,
-            updatedAt = user.updatedAt
+            createdAt = user.createdAt.toString(),
+            updatedAt = user.updatedAt.toString()
         )
         return responseDto
     }

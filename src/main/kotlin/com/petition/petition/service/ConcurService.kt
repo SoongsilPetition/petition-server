@@ -53,8 +53,8 @@ class ConcurService(
                 userId = user?.userId,
                 name = user?.name,
                 email = user?.email,
-                createdAt = user?.createdAt,
-                updatedAt = user?.updatedAt
+                createdAt = user?.createdAt.toString(),
+                updatedAt = user?.updatedAt.toString()
             )
         )
     }
@@ -74,8 +74,8 @@ class ConcurService(
                     userId = it.user?.userId,
                     name = it.user?.name,
                     email = it.user?.email,
-                    createdAt = it.user?.createdAt,
-                    updatedAt = it.user?.updatedAt
+                    createdAt = it.user?.createdAt.toString(),
+                    updatedAt = it.user?.updatedAt.toString()
                 )
             )
         }
@@ -96,8 +96,8 @@ class ConcurService(
                     userId = it.user?.userId,
                     name = it.user?.name,
                     email = it.user?.email,
-                    createdAt = it.user?.createdAt,
-                    updatedAt = it.user?.updatedAt
+                    createdAt = it.user?.createdAt.toString(),
+                    updatedAt = it.user?.updatedAt.toString()
                 )
             )
         }
