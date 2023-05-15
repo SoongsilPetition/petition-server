@@ -66,6 +66,8 @@ dependencies {
 	implementation("org.springframework.kafka:spring-kafka")
 	//redis
 	implementation("org.springframework.boot:spring-boot-starter-data-redis:2.5.6")
+
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
 }
 
 tasks.withType<KotlinCompile> {

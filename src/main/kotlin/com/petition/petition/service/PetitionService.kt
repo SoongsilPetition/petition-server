@@ -10,7 +10,11 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import org.springframework.http.*
 import org.springframework.stereotype.Service
+import org.springframework.web.client.RestTemplate
+import org.springframework.web.reactive.function.client.WebClient
+import java.net.http.HttpClient
 
 @Service
 class PetitionService(
@@ -19,9 +23,12 @@ class PetitionService(
     private val petitionCategoryService: PetitionCategoryService
 ) {
 
-    fun savePetition(body: PetitionWriteRequestDto, jwt:String): PetitionResponseDto {
+    fun savePetition(body: PetitionWriteRequestDto, jwt: String): PetitionResponseDto {
         val user: User? = userService.getValidUser(jwt)
         //TODO:글 내용을 인공 지능 서버와 소통해서 분란글, 정상글, 뻘글인지 분류.
+        if (sendToAzureML(body.petitionContent) != "none") {
+            throw Exception("분란글입니다.")
+        }
         //일단은 APPROPRIATE로 저장
         //Question: petitionType을 Petition엔티티 파일아래에 두는게 아닌 파일을 분리해야하는지 고민
         val petitionType: PetitionType = PetitionType.APPROPRIATE
@@ -50,7 +57,7 @@ class PetitionService(
         //category를 추가하여 다시 저장
         val savedPetition = petitionRepository.save(petition)
 
-        val response: PetitionResponseDto= PetitionResponseDto(
+        val response: PetitionResponseDto = PetitionResponseDto(
             petitionId = savedPetition.petitionId,
             petitionTitle = savedPetition.petitionTitle,
             petitionContent = savedPetition.petitionContent,
@@ -61,20 +68,20 @@ class PetitionService(
                 name = savedPetition.users?.name,
                 email = savedPetition.users?.email,
                 createdAt = savedPetition.users?.createdAt.toString(),
-                updatedAt  = savedPetition.users?.updatedAt.toString()
+                updatedAt = savedPetition.users?.updatedAt.toString()
             ),
         )
         return response
 
     }
 
-    fun getPetitionsList(page: Int, size: Int, sort: String,category:String?): List<PetitionResponseDto>? {
+    fun getPetitionsList(page: Int, size: Int, sort: String, category: String?): List<PetitionResponseDto>? {
         val pageRequest: Pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC, sort)
         val petitions: Page<Petition>
-        if(category==null){
+        if (category == null) {
             petitions = petitionRepository.findAll(pageRequest)
-        }else{
-            petitions = petitionRepository.findAllByCategoryNames(category,pageRequest)
+        } else {
+            petitions = petitionRepository.findAllByCategoryNames(category, pageRequest)
         }
         val petitionResponseDtoList = mutableListOf<PetitionResponseDto>()
         petitions.forEach { petition ->
@@ -100,17 +107,19 @@ class PetitionService(
                     name = petition.users?.name,
                     email = petition.users?.email,
                     createdAt = petition.users?.createdAt.toString(),
-                    updatedAt  = petition.users?.updatedAt.toString()
+                    updatedAt = petition.users?.updatedAt.toString()
                 ),
             )
             petitionResponseDtoList.add(petitionResponseDto)
         }
         return petitionResponseDtoList
     }
+
     fun getValidatedPetition(petitionId: Int): Petition {
         return petitionRepository.getById(petitionId)
     }
-    fun getPetition(petitionId: Int): PetitionResponseDto{
+
+    fun getPetition(petitionId: Int): PetitionResponseDto {
         val findPetition = getValidatedPetition(petitionId)
 
         val findPetitionCategory = petitionCategoryService.getPetitionCategories(findPetition)
@@ -135,7 +144,7 @@ class PetitionService(
                 name = findPetition.users?.name,
                 email = findPetition.users?.email,
                 createdAt = findPetition.users?.createdAt.toString(),
-                updatedAt  = findPetition.users?.updatedAt.toString()
+                updatedAt = findPetition.users?.updatedAt.toString()
             ),
         )
     }
@@ -147,4 +156,25 @@ class PetitionService(
     fun updatePetition(petition: Petition): Petition {
         return petitionRepository.save(petition)
     }
+
+    fun sendToAzureML(text: String): String {
+        val webClient = WebClient.builder().build()
+        // Petition 객체를 가정하고, petition.text를 전송 데이터로 사용합니다.
+        val requestBody = mapOf("text" to text)
+        val response = webClient.post()
+            .uri("https://petetionai.azurewebsites.net/predict")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(requestBody)
+            .retrieve()
+            .bodyToMono(Map::class.java)
+            .block()
+
+        // 응답 데이터에서 "result" 필드의 값을 가져옵니다.
+        val result = response?.get("result") as String
+        println("결과:"+result)
+        return result
+
+
+    }
+
 }

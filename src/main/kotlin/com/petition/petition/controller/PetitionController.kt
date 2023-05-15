@@ -41,8 +41,14 @@ class PetitionController(
         @Parameter(description = "청원 글 작성 정보", required = true)
         @RequestBody body: PetitionWriteRequestDto,
         @RequestHeader("Authorization") jwt: String
-    ): ResponseEntity<PetitionResponseDto> {
-        return ResponseEntity.ok(petitionService.savePetition(body, jwt))
+    ): ResponseEntity<Any> {
+        try{
+            val savedPost = petitionService.savePetition(body, jwt)
+            return ResponseEntity.ok(savedPost)
+        } catch (e: Exception) {
+            //분란글이라는 오류 메시지 출력
+            return ResponseEntity.badRequest().body("hate petition. Can't save petition")
+        }
     }
 
     //TODO: 최신순, 동의 많은순 정렬 기능 추가
