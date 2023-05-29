@@ -5,10 +5,12 @@ import com.petition.petition.common.exception.UnauthenticatedException
 import com.petition.petition.model.payload.auth.request.LoginRequestDto
 import com.petition.petition.model.payload.auth.request.RegisterRequestDto
 import com.petition.petition.model.entity.User
+import com.petition.petition.model.payload.auth.response.JwtResponseDto
 import com.petition.petition.model.payload.auth.response.UserResponseDto
 import com.petition.petition.repository.UserRepository
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import lombok.Setter
 import org.springframework.stereotype.Service
 import java.util.*
 import javax.servlet.http.HttpServletResponse
@@ -71,14 +73,18 @@ class UserService(
         return findByEmail(body.issuer)
     }
 
-    fun login(body:LoginRequestDto,response: HttpServletResponse){
+    fun login(body:LoginRequestDto,response: HttpServletResponse): JwtResponseDto{
         //유효한 유저인지 검증하는 로직
         //TODO: 숭실대 학생인지 검증하는 로직 추가 필요
         checkValidUser(body)
         //JWT 생성
-        val jwt = generateJwt(body)
+        val generatedJwt = generateJwt(body)
 
         //JWT를 저장
-        response.addHeader("Authorization", "$jwt")
+        //response.addHeader("Authorization", "$generatedJwt")
+        val responseDto = JwtResponseDto(
+            jwt=generatedJwt
+        )
+        return responseDto
     }
 }
