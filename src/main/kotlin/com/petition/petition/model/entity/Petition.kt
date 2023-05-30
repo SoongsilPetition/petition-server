@@ -19,7 +19,7 @@ class Petition(
     @Column(nullable = false)
     var petitionTitle: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
     var petitionContent: String,
 
     @Column(nullable = false)
