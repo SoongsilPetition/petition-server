@@ -3,7 +3,7 @@ package com.petition.petition.model.payload.petition.response
 import com.petition.petition.model.payload.auth.response.UserResponseDto
 import com.petition.petition.model.payload.petitionCategory.response.PetitionCategoryResponseDto
 
-data class PetitionResponseDto (
+data class PetitionResponseDto(
     val petitionId: Int = 0,
     val petitionTitle: String = "",
     val petitionContent: String = "",
@@ -14,4 +14,5 @@ data class PetitionResponseDto (
     val user: UserResponseDto? = null,
     val createdAt: String = "",
     val updatedAt: String = "",
+    val petitionDueDate: String = ""
 )

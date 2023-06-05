@@ -70,6 +70,11 @@ class PetitionService(
                 createdAt = savedPetition.users?.createdAt.toString(),
                 updatedAt = savedPetition.users?.updatedAt.toString()
             ),
+            petitionAgreement = savedPetition.agreeCount,
+            petitionDisagreement = savedPetition.disagreeCount,
+            createdAt = savedPetition.createdAt.toString(),
+            updatedAt = savedPetition.updatedAt.toString(),
+            petitionDueDate = savedPetition.petitionDueDate.toString()
         )
         return response
 

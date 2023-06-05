@@ -73,7 +73,7 @@ class UserService(
         return findByEmail(body.issuer)
     }
 
-    fun login(body:LoginRequestDto,response: HttpServletResponse): JwtResponseDto{
+    fun login(body:LoginRequestDto): JwtResponseDto{
         //유효한 유저인지 검증하는 로직
         //TODO: 숭실대 학생인지 검증하는 로직 추가 필요
         checkValidUser(body)

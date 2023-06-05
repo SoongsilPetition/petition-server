@@ -60,8 +60,8 @@ class UserController(
             )],
     )
     @PostMapping("user/login")
-    fun login(@RequestBody body: LoginRequestDto, response: HttpServletResponse): ResponseEntity<*> {
-        val jwtReturn = userService.login(body, response)
+    fun login(@RequestBody body: LoginRequestDto): ResponseEntity<*> {
+        val jwtReturn = userService.login(body)
         return ResponseEntity.ok(jwtReturn)
     }
 }
