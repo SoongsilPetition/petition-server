@@ -12,7 +12,7 @@ class Concur(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var concurId: Int,
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100000000)
     var concurContent: String,
 
     @ManyToOne
@@ -26,10 +26,10 @@ class Concur(
     var petition: Petition,
 
     @Column(nullable = false)
-    var agreementStatus:AgreementStatus
+    var agreementStatus: AgreementStatus
 
-): BaseEntity(){
-    constructor(concurContent:String, user:User?, petition:Petition?, agreementStatus:AgreementStatus):this(
+) : BaseEntity() {
+    constructor(concurContent: String, user: User?, petition: Petition?, agreementStatus: AgreementStatus) : this(
         concurId = 0,
         concurContent = concurContent,
         user = user!!,
@@ -38,6 +38,6 @@ class Concur(
     )
 }
 
-enum class AgreementStatus{
-    AGREE,DISAGREE
+enum class AgreementStatus {
+    AGREE, DISAGREE
 }

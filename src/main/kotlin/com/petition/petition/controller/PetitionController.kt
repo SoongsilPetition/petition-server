@@ -24,13 +24,6 @@ class PetitionController(
     @Operation(summary = "청원 글 작성 API")
     @ApiResponses(
         value = [
-            ApiResponse(
-                responseCode = "200", description = "청원 글 작성 성공",
-                content = [Content(
-                    mediaType = "application/json",
-                    schema = Schema(implementation = PetitionResponseDto::class)
-                )]
-            ),
             ApiResponse(responseCode = "400", description = "잘못된 요청", content = [Content()]),
             ApiResponse(responseCode = "401", description = "인증 실패", content = [Content()]),
             ApiResponse(responseCode = "500", description = "서버 오류", content = [Content()])

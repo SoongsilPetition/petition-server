@@ -26,8 +26,10 @@ class PetitionService(
     fun savePetition(body: PetitionWriteRequestDto, jwt: String): PetitionResponseDto {
         val user: User? = userService.getValidUser(jwt)
         //TODO:글 내용을 인공 지능 서버와 소통해서 분란글, 정상글, 뻘글인지 분류.
-        if (sendToAzureML(body.petitionContent) != "none") {
+        if (sendToAzureML(body.petitionContent) == "hate") {
             throw Exception("분란글입니다.")
+        }else if(sendToAzureML(body.petitionContent) == "meaningless"){
+            throw Exception("뻘글입니다.")
         }
         //일단은 APPROPRIATE로 저장
         //Question: petitionType을 Petition엔티티 파일아래에 두는게 아닌 파일을 분리해야하는지 고민
@@ -114,6 +116,9 @@ class PetitionService(
                     createdAt = petition.users?.createdAt.toString(),
                     updatedAt = petition.users?.updatedAt.toString()
                 ),
+                createdAt = petition.createdAt.toString(),
+                updatedAt = petition.updatedAt.toString(),
+                petitionDueDate = petition.petitionDueDate.toString()
             )
             petitionResponseDtoList.add(petitionResponseDto)
         }
@@ -151,6 +156,9 @@ class PetitionService(
                 createdAt = findPetition.users?.createdAt.toString(),
                 updatedAt = findPetition.users?.updatedAt.toString()
             ),
+            createdAt = findPetition.createdAt.toString(),
+            updatedAt = findPetition.updatedAt.toString(),
+            petitionDueDate = findPetition.petitionDueDate.toString()
         )
     }
 

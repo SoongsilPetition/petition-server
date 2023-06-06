@@ -16,7 +16,7 @@ data class PetitionAnswer(
 
     @Column(nullable = false)
     var petitionAnswerTitle: String,
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100000000)
     var petitionAnswerContent: String,
     @Column
     var petitionAnswerImage: String? = null,
@@ -31,8 +31,14 @@ data class PetitionAnswer(
     @JoinColumn(name = "petition_id")
     var petition: Petition,
 
-) : BaseEntity(){
-    constructor(petitionAnswerTitle:String,petitionAnswerContent: String, petition: Petition, user: User?,petitionAnswerImage: String?) : this(
+    ) : BaseEntity() {
+    constructor(
+        petitionAnswerTitle: String,
+        petitionAnswerContent: String,
+        petition: Petition,
+        user: User?,
+        petitionAnswerImage: String?
+    ) : this(
         0,
         petitionAnswerTitle,
         petitionAnswerContent,
