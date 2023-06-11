@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
 interface PetitionRepository: JpaRepository<Petition, Int> {
-    fun findAllByPetitionType(petitionStatus: PetitionStatus): List<Petition>
+    fun findAllByStatus(petitionStatus: PetitionStatus): List<Petition>
     @Query("SELECT p FROM Petition p JOIN p.category pc JOIN pc.category c WHERE c.categoryName = :category")
     fun findAllByCategoryNames(category: String, page: Pageable): Page<Petition>
 

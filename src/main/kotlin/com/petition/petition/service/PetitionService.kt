@@ -208,7 +208,7 @@ class PetitionService(
     }
 
     fun getOngoingPetitionsList(): List<Petition>? {
-        return petitionRepository.findAllByPetitionType(PetitionStatus.ONGOING)
+        return petitionRepository.findAllByStatus(PetitionStatus.ONGOING)
     }
 
     fun updatePetition(petition: Petition): Petition {
