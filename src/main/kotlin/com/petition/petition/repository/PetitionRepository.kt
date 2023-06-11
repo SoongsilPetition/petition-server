@@ -11,4 +11,8 @@ interface PetitionRepository: JpaRepository<Petition, Int> {
     fun findAllByPetitionType(petitionStatus: PetitionStatus): List<Petition>
     @Query("SELECT p FROM Petition p JOIN p.category pc JOIN pc.category c WHERE c.categoryName = :category")
     fun findAllByCategoryNames(category: String, page: Pageable): Page<Petition>
+
+    //find By Petition Content Containing keyword
+    @Query("SELECT p FROM Petition p WHERE p.petitionContent LIKE %:keyword%")
+    fun findAllByPetitionContentContaining(keyword: String, page: Pageable): Page<Petition>
 }

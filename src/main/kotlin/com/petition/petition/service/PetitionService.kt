@@ -1,6 +1,9 @@
 package com.petition.petition.service
 
-import com.petition.petition.model.entity.*
+import com.petition.petition.model.entity.Petition
+import com.petition.petition.model.entity.PetitionStatus
+import com.petition.petition.model.entity.PetitionType
+import com.petition.petition.model.entity.User
 import com.petition.petition.model.payload.auth.response.UserResponseDto
 import com.petition.petition.model.payload.petition.request.PetitionWriteRequestDto
 import com.petition.petition.model.payload.petition.response.PetitionResponseDto
@@ -10,11 +13,9 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
-import org.springframework.http.*
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
-import org.springframework.web.client.RestTemplate
 import org.springframework.web.reactive.function.client.WebClient
-import java.net.http.HttpClient
 
 @Service
 class PetitionService(
@@ -28,7 +29,7 @@ class PetitionService(
         //TODO:글 내용을 인공 지능 서버와 소통해서 분란글, 정상글, 뻘글인지 분류.
         if (sendToAzureML(body.petitionContent) == "hate") {
             throw Exception("분란글입니다.")
-        }else if(sendToAzureML(body.petitionContent) == "meaningless"){
+        } else if (sendToAzureML(body.petitionContent) == "meaningless") {
             throw Exception("뻘글입니다.")
         }
         //일단은 APPROPRIATE로 저장
@@ -125,6 +126,50 @@ class PetitionService(
         return petitionResponseDtoList
     }
 
+    fun searchPetitions(page: Int, size: Int, keyword: String?, sort: String): List<PetitionResponseDto>? {
+        val pageRequest: Pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC, sort)
+        val petitions: Page<Petition>
+        if (keyword == null) {
+            petitions = petitionRepository.findAll(pageRequest)
+        } else {
+            petitions = petitionRepository.findAllByPetitionContentContaining(keyword, pageRequest)
+        }
+        val petitionResponseDtoList = mutableListOf<PetitionResponseDto>()
+        petitions.forEach { petition ->
+            val petitionCategoryResponseDtoList = mutableListOf<PetitionCategoryResponseDto>()
+            val findPetitionCategory = petitionCategoryService.getPetitionCategories(petition)
+            findPetitionCategory?.forEach { petitionCategory ->
+                val petitionCategoryResponseDto = PetitionCategoryResponseDto(
+                    petitionCategoryId = petitionCategory.petitionCategoryId,
+                    petitionCategoryName = petitionCategory.category.categoryName
+                )
+                petitionCategoryResponseDtoList.add(petitionCategoryResponseDto)
+            }
+            val petitionResponseDto = PetitionResponseDto(
+                petitionId = petition.petitionId,
+                petitionTitle = petition.petitionTitle,
+                petitionContent = petition.petitionContent,
+                petitionImage = petition.petitionImage,
+                petitionCategory = petitionCategoryResponseDtoList,
+                petitionAgreement = petition.agreeCount,
+                petitionDisagreement = petition.disagreeCount,
+                user = UserResponseDto(
+                    userId = petition.users?.userId,
+                    name = petition.users?.name,
+                    email = petition.users?.email,
+                    createdAt = petition.users?.createdAt.toString(),
+                    updatedAt = petition.users?.updatedAt.toString()
+                ),
+                createdAt = petition.createdAt.toString(),
+                updatedAt = petition.updatedAt.toString(),
+                petitionDueDate = petition.petitionDueDate.toString()
+            )
+            petitionResponseDtoList.add(petitionResponseDto)
+        }
+        return petitionResponseDtoList
+    }
+
+
     fun getValidatedPetition(petitionId: Int): Petition {
         return petitionRepository.getById(petitionId)
     }
@@ -184,7 +229,7 @@ class PetitionService(
 
         // 응답 데이터에서 "result" 필드의 값을 가져옵니다.
         val result = response?.get("result") as String
-        println("결과:"+result)
+        println("결과:" + result)
         return result
 
 

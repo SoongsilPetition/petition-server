@@ -85,6 +85,21 @@ class PetitionController(
         return ResponseEntity.ok(petitionService.getPetitionsList(page, size, sort, category))
     }
 
+    @GetMapping("petition/search")
+    fun searchPetitions(
+        @Parameter(description = "페이지 번호", required = false, example = "1")
+        @RequestParam(required = false, defaultValue = "1") page: Int,
+        @Parameter(description = "페이지 크기", required = false, example = "10")
+        @RequestParam(required = false, defaultValue = "10") size: Int,
+        @Parameter(description = "정렬 기준", required = false, example = "agreeCount")
+        @RequestParam(required = false, defaultValue = "createdAt") sort: String,
+        @Parameter(description = "검색어", required = true, example = "교통")
+        @RequestParam(required = true) keyword: String
+    ): ResponseEntity<*>{
+        return ResponseEntity.ok(petitionService.searchPetitions(page, size,keyword,sort))
+    }
+
+
     @Operation(summary = "특정 청원 글 조회 API")
     @ApiResponses(
         value = [
