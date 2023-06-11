@@ -1,6 +1,7 @@
 package com.petition.petition.controller
 
 import com.petition.petition.model.payload.petition.request.PetitionWriteRequestDto
+import com.petition.petition.model.payload.petition.response.BadPetitionResponseDto
 import com.petition.petition.model.payload.petition.response.PetitionResponseDto
 import com.petition.petition.service.PetitionService
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -39,8 +40,18 @@ class PetitionController(
             val savedPost = petitionService.savePetition(body, jwt)
             return ResponseEntity.ok(savedPost)
         } catch (e: Exception) {
-            //분란글이라는 오류 메시지 출력
-            return ResponseEntity.badRequest().body("hate petition. Can't save petition")
+            //e 값이 무엇인지에 따라 증오글인지, 뻘글인지 구분
+            if(e.message == "뻘글입니다."){
+                val badPetitionResponseDto = BadPetitionResponseDto(
+                    errorType = "뻘글",
+                )
+                return ResponseEntity.badRequest().body(badPetitionResponseDto)
+            }else{
+                val badPetitionResponseDto = BadPetitionResponseDto(
+                    errorType = "혐오글",
+                )
+                return ResponseEntity.badRequest().body(badPetitionResponseDto)
+            }
         }
     }
 

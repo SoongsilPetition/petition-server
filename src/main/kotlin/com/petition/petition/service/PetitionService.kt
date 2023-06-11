@@ -175,7 +175,7 @@ class PetitionService(
         // Petition 객체를 가정하고, petition.text를 전송 데이터로 사용합니다.
         val requestBody = mapOf("text" to text)
         val response = webClient.post()
-            .uri("https://petetionai.azurewebsites.net/predict")
+            .uri("http://124.49.124.27:9090/predict")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(requestBody)
             .retrieve()
