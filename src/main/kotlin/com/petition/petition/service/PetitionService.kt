@@ -27,9 +27,10 @@ class PetitionService(
     fun savePetition(body: PetitionWriteRequestDto, jwt: String): PetitionResponseDto {
         val user: User? = userService.getValidUser(jwt)
         //TODO:글 내용을 인공 지능 서버와 소통해서 분란글, 정상글, 뻘글인지 분류.
-        if (sendToAzureML(body.petitionContent) == "hate") {
+        val test = sendToAzureML(body.petitionContent)
+        if (test == "hate") {
             throw Exception("분란글입니다.")
-        } else if (sendToAzureML(body.petitionContent) == "meaningless") {
+        } else if (test == "meaningless") {
             throw Exception("뻘글입니다.")
         }
         //일단은 APPROPRIATE로 저장
@@ -46,7 +47,9 @@ class PetitionService(
         //petition을 일단 저장하고 category를 추가하는 방식으로 설정
         petitionRepository.save(petition)
         val petitionCategories = petitionCategoryService.savePetitionCategories(body.petitionCategory, petition)
+        //println(petitionCategories?.get(0).toString())
         petition.category = petitionCategories
+
         val petitionCategoryResponseDtoList = mutableListOf<PetitionCategoryResponseDto>()
         petitionCategories?.forEach { petitionCategory ->
             println(petitionCategory.category.categoryName)
@@ -229,7 +232,7 @@ class PetitionService(
 
         // 응답 데이터에서 "result" 필드의 값을 가져옵니다.
         val result = response?.get("result") as String
-        println("결과:" + result)
+        //println("결과:" + result)
         return result
     }
 

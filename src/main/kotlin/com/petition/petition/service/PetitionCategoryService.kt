@@ -32,12 +32,12 @@ class PetitionCategoryService(
                     )
                     categoryRepository.save(category)
                 }else{
-                    val petitionCategory = PetitionCategory(
+                    val newPetitionCategory = PetitionCategory(
                         petition = petition,
                         category = findCategory
                     )
-                    petitionCategoryRepository.save(petitionCategory)
-                    petitionCategoryList.add(petitionCategory)
+                    petitionCategoryRepository.save(newPetitionCategory)
+                    petitionCategoryList.add(newPetitionCategory)
                 }
             }
             return petitionCategoryList
