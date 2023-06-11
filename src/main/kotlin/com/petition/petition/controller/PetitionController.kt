@@ -121,4 +121,18 @@ class PetitionController(
     ): ResponseEntity<PetitionResponseDto> {
         return ResponseEntity.ok(petitionService.getPetition(petitionId))
     }
+
+    //청원 달성한 게시글들 조회
+    @GetMapping("petition/completed")
+    fun getCompletedPetitions(
+        @Parameter(description = "페이지 번호", required = false, example = "1")
+        @RequestParam(required = false, defaultValue = "1") page: Int,
+        @Parameter(description = "페이지 크기", required = false, example = "10")
+        @RequestParam(required = false, defaultValue = "10") size: Int,
+        @Parameter(description = "정렬 기준", required = false, example = "agreeCount")
+        @RequestParam(required = false, defaultValue = "createdAt") sort: String,
+    ): ResponseEntity<List<PetitionResponseDto>> {
+        return ResponseEntity.ok(petitionService.getCompletedPetitions(page, size, sort))
+    }
+
 }

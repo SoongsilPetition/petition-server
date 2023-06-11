@@ -231,8 +231,45 @@ class PetitionService(
         val result = response?.get("result") as String
         println("결과:" + result)
         return result
+    }
 
-
+    fun getCompletedPetitions(page: Int, size: Int, sort: String): List<PetitionResponseDto>? {
+        val pageRequest: Pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC, sort)
+        val petitions: Page<Petition>
+        petitions = petitionRepository.findAllByStatus(PetitionStatus.ACCEPTED, pageRequest)
+        val petitionResponseDtoList = mutableListOf<PetitionResponseDto>()
+        petitions.forEach { petition ->
+            val petitionCategoryResponseDtoList = mutableListOf<PetitionCategoryResponseDto>()
+            val findPetitionCategory = petitionCategoryService.getPetitionCategories(petition)
+            findPetitionCategory?.forEach { petitionCategory ->
+                val petitionCategoryResponseDto = PetitionCategoryResponseDto(
+                    petitionCategoryId = petitionCategory.petitionCategoryId,
+                    petitionCategoryName = petitionCategory.category.categoryName
+                )
+                petitionCategoryResponseDtoList.add(petitionCategoryResponseDto)
+            }
+            val petitionResponseDto = PetitionResponseDto(
+                petitionId = petition.petitionId,
+                petitionTitle = petition.petitionTitle,
+                petitionContent = petition.petitionContent,
+                petitionImage = petition.petitionImage,
+                petitionCategory = petitionCategoryResponseDtoList,
+                petitionAgreement = petition.agreeCount,
+                petitionDisagreement = petition.disagreeCount,
+                user = UserResponseDto(
+                    userId = petition.users?.userId,
+                    name = petition.users?.name,
+                    email = petition.users?.email,
+                    createdAt = petition.users?.createdAt.toString(),
+                    updatedAt = petition.users?.updatedAt.toString()
+                ),
+                createdAt = petition.createdAt.toString(),
+                updatedAt = petition.updatedAt.toString(),
+                petitionDueDate = petition.petitionDueDate.toString()
+            )
+            petitionResponseDtoList.add(petitionResponseDto)
+        }
+        return petitionResponseDtoList
     }
 
 }
