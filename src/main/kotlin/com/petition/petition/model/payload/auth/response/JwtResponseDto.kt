@@ -6,5 +6,6 @@ import lombok.Setter
 @Getter
 @Setter
 data class JwtResponseDto(
+    val userId:Int?=null,
     val jwt:String?=""
 )

@@ -83,6 +83,7 @@ class UserService(
         //JWT를 저장
         //response.addHeader("Authorization", "$generatedJwt")
         val responseDto = JwtResponseDto(
+            userId = findByEmail(body.email)?.userId,
             jwt=generatedJwt
         )
         return responseDto
