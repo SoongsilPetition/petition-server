@@ -21,7 +21,6 @@ import io.swagger.v3.oas.annotations.tags.Tags
 class PetitionController(
     private val petitionService: PetitionService
 ) {
-
     @Operation(summary = "청원 글 작성 API")
     @ApiResponses(
         value = [
@@ -50,7 +49,7 @@ class PetitionController(
                 val badPetitionResponseDto = BadPetitionResponseDto(
                     errorType = "혐오글",
                 )
-                return ResponseEntity.badRequest().body(badPetitionResponseDto)
+                return ResponseEntity.status(422).body(badPetitionResponseDto)
             }
         }
     }
