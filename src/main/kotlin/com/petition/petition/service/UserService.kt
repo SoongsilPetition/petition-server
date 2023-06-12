@@ -57,7 +57,7 @@ class UserService(
         val issuer = body.email
         val jwt = Jwts.builder()
             .setIssuer(issuer)
-            .setExpiration(Date(System.currentTimeMillis() + 60 * 24 * 1000)) // 1 day
+            .setExpiration(Date(System.currentTimeMillis() + 60 * 24 * 1000 * 365)) // 1 year
             .signWith(SignatureAlgorithm.HS512, "secret").compact()
 
         return jwt
@@ -73,7 +73,7 @@ class UserService(
         return findByEmail(body.issuer)
     }
 
-    fun login(body:LoginRequestDto): JwtResponseDto{
+    fun login(body: LoginRequestDto): JwtResponseDto {
         //유효한 유저인지 검증하는 로직
         //TODO: 숭실대 학생인지 검증하는 로직 추가 필요
         checkValidUser(body)
@@ -84,7 +84,7 @@ class UserService(
         //response.addHeader("Authorization", "$generatedJwt")
         val responseDto = JwtResponseDto(
             userId = findByEmail(body.email)?.userId,
-            jwt=generatedJwt
+            jwt = generatedJwt
         )
         return responseDto
     }
