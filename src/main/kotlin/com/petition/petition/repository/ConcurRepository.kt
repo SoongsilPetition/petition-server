@@ -12,4 +12,5 @@ interface ConcurRepository: JpaRepository<Concur, Int> {
     fun countByPetitionAndAgreementStatus(petitionId: Int, agreementStatus: AgreementStatus): Int
 
     fun findAllByUser_UserId(userId: Int, pageable: Pageable): Page<Concur>
+    abstract fun findAllByPetition(petition: Petition, pageRequest: Pageable): Page<Concur>
 }

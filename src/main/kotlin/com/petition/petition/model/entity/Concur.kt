@@ -39,5 +39,5 @@ class Concur(
 }
 
 enum class AgreementStatus {
-    AGREE, DISAGREE
+    AGREE, DISAGREE, ALL
 }

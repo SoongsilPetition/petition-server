@@ -62,7 +62,12 @@ class ConcurService(
     fun getConcursList(petitionId: Int, page: Int, size: Int, agreementStatus: AgreementStatus): List<ConcurResponseDto>? {
         val pageRequest: Pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "createdAt")
         val petition:Petition = petitionService.getValidatedPetition(petitionId)
-        val concurs: Page<Concur> = concurRepository.findAllByPetitionAndAgreementStatus(petition, agreementStatus,pageRequest)
+        //agreement 인자가 있는지 없는지에 따라 다르게 처리
+        val concurs: Page<Concur>
+        if(agreementStatus == AgreementStatus.ALL)
+            concurs = concurRepository.findAllByPetition(petition,pageRequest)
+        else
+            concurs = concurRepository.findAllByPetitionAndAgreementStatus(petition, agreementStatus,pageRequest)
         return concurs.content.map {
             ConcurResponseDto(
                 concurId = it.concurId,

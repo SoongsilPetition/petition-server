@@ -94,7 +94,7 @@ class ConcurController(
     @GetMapping("concur")
     fun getConcur(
         @RequestParam(required = true) petitionId: Int,
-        @RequestParam(required = false, defaultValue = "AGREE") agreementStatus: AgreementStatus, //sort가 string이 맞나?
+        @RequestParam(required = false, defaultValue = "ALL") agreementStatus: AgreementStatus, //sort가 string이 맞나?
         @RequestParam(required = false, defaultValue = "1") page: Int,
         @RequestParam(required = false, defaultValue = "10") size: Int,
     ): ResponseEntity<List<ConcurResponseDto>> {
